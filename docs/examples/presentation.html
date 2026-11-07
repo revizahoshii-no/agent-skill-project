@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#16161a">
+  <title>Web Presentation Example</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body class="stage-page">
+  <main class="stage-wrap">
+    <section class="stage" aria-labelledby="slideTitle">
+      <span class="stage-number" id="slideNumber">01 / 02</span>
+      <p class="demo-kicker" id="slideKicker">Chapter 01, direction</p>
+      <h1 id="slideTitle">Start with one visual thesis.</h1>
+      <p id="slideBody">A stable direction lets type, spacing, imagery, and motion reinforce the same idea.</p>
+      <div class="stage-rule" aria-hidden="true"></div>
+    </section>
+    <nav class="stage-controls" aria-label="Slide navigation">
+      <a id="previous" href="?slide=1" hidden>Previous</a>
+      <a id="next" href="?slide=2">Next</a>
+    </nav>
+  </main>
+  <script>
+    const slides = [
+      {
+        kicker: 'Chapter 01, direction',
+        title: 'Start with one visual thesis.',
+        body: 'A stable direction lets type, spacing, imagery, and motion reinforce the same idea.'
+      },
+      {
+        kicker: 'Chapter 02, evidence',
+        title: 'Verify the page in motion.',
+        body: 'A rendered interface reveals overflow, weak focus, broken controls, and rhythm that source inspection cannot prove.'
+      }
+    ]
+    const query = new URLSearchParams(location.search)
+    const current = query.get('slide') === '2' ? 1 : 0
+    document.querySelector('#slideNumber').textContent = `0${current + 1} / 02`
+    document.querySelector('#slideKicker').textContent = slides[current].kicker
+    document.querySelector('#slideTitle').textContent = slides[current].title
+    document.querySelector('#slideBody').textContent = slides[current].body
+    const previous = document.querySelector('#previous')
+    const next = document.querySelector('#next')
+    previous.hidden = current === 0
+    next.hidden = current === 1
+    addEventListener('keydown', event => {
+      if (event.key === 'ArrowRight') location.search = 'slide=2'
+      if (event.key === 'ArrowLeft') location.search = 'slide=1'
+    })
+  </script>
+</body>
+</html>

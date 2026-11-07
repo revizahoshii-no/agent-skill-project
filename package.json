@@ -1,0 +1,13 @@
+{
+  "name": "agent-skill-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "validate": "python3 scripts/validate.py",
+    "browser:check": "node scripts/browser-check.mjs",
+    "check": "npm run validate && npm run browser:check"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}

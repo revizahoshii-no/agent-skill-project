@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f0e8">
+  <title>Release Gate Example</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <main class="release-page demo-shell">
+    <header class="release-head">
+      <div>
+        <p class="demo-kicker">Release gate</p>
+        <h1>Ready means verified.</h1>
+      </div>
+      <p>Each pass is backed by a command, browser path, or production response.</p>
+    </header>
+    <div class="release-grid">
+      <section class="release-list" aria-label="Release checklist">
+        <article class="release-row">
+          <span class="release-check" aria-hidden="true">✓</span>
+          <strong>Build and validation</strong>
+          <span>Passed</span>
+        </article>
+        <article class="release-row">
+          <span class="release-check" aria-hidden="true">✓</span>
+          <strong>Credential and diff scan</strong>
+          <span>Clean</span>
+        </article>
+        <article class="release-row">
+          <span class="release-check" aria-hidden="true">✓</span>
+          <strong>Browser interaction path</strong>
+          <span>Exercised</span>
+        </article>
+        <article class="release-row">
+          <span class="release-check" aria-hidden="true">✓</span>
+          <strong>Production response</strong>
+          <span>Verified</span>
+        </article>
+      </section>
+      <aside class="release-side">
+        <p class="demo-kicker" style="color:#fff">Delivery record</p>
+        <h2>Evidence stays short.</h2>
+        <dl>
+          <div><dt>Branch</dt><dd>main</dd></div>
+          <div><dt>Environment</dt><dd>production</dd></div>
+          <div><dt>Remaining issues</dt><dd>none recorded</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

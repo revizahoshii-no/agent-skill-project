@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f0e8">
+  <title>Knowledge Retrieval Example</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <main class="knowledge-page demo-shell">
+    <header class="knowledge-head">
+      <div>
+        <p class="demo-kicker">Progressive retrieval</p>
+        <h1>Evidence map.</h1>
+      </div>
+      <p>Read the index, narrow the branch, then retain only useful excerpts.</p>
+    </header>
+    <div class="knowledge-grid">
+      <section class="file-tree" aria-labelledby="tree-title">
+        <h2 id="tree-title">Knowledge root</h2>
+        <ul>
+          <li>data_structure.md</li>
+          <li>product/
+            <ul>
+              <li>overview.md</li>
+              <li>behavior.md</li>
+            </ul>
+          </li>
+          <li>research/
+            <ul>
+              <li>interviews.pdf</li>
+              <li>findings.xlsx</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <section class="evidence-panel" aria-labelledby="evidence-title">
+        <h2 id="evidence-title">Retained evidence</h2>
+        <article class="evidence-item">
+          <code>product/behavior.md, section 3</code>
+          <p>The primary action remains available while supporting content changes state.</p>
+        </article>
+        <article class="evidence-item">
+          <code>research/interviews.pdf, page 12</code>
+          <p>Readers describe the current navigation as difficult to scan on smaller screens.</p>
+        </article>
+        <article class="evidence-item">
+          <code>research/findings.xlsx, Usability sheet</code>
+          <p>The strongest recurring theme concerns orientation, not visual styling.</p>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1746a2">
+  <title>Accessible Form Example</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <main class="form-page">
+    <section class="form-layout" aria-labelledby="form-title">
+      <div class="form-intro">
+        <p class="demo-kicker" style="color:#fff">Accessible form</p>
+        <h1 id="form-title">Send a focused brief.</h1>
+        <p>Describe the decision you need to make. The form explains errors beside the relevant field and keeps every action available by keyboard.</p>
+      </div>
+      <form class="form-panel" id="briefForm" novalidate>
+        <div class="field">
+          <label for="topic">Topic</label>
+          <input id="topic" name="topic" type="text" autocomplete="off" placeholder="Example: mobile navigation" aria-describedby="topicError">
+          <p class="field-error" id="topicError" hidden>Enter a topic so the brief has a clear subject.</p>
+        </div>
+        <div class="field">
+          <label for="audience">Primary audience</label>
+          <select id="audience" name="audience" autocomplete="off">
+            <option value="">Choose an audience</option>
+            <option>New visitors</option>
+            <option>Returning users</option>
+            <option>Internal operators</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="outcome">Expected outcome</label>
+          <textarea id="outcome" name="outcome" placeholder="Describe the decision or action this page should support"></textarea>
+        </div>
+        <button class="form-action" type="submit">Save brief</button>
+        <p class="form-message" id="formMessage" role="status" hidden>Brief saved. You can continue with the design direction.</p>
+      </form>
+    </section>
+  </main>
+  <script>
+    const form = document.querySelector('#briefForm')
+    const topic = document.querySelector('#topic')
+    const error = document.querySelector('#topicError')
+    const message = document.querySelector('#formMessage')
+    const showError = () => {
+      topic.setAttribute('aria-invalid', 'true')
+      error.hidden = false
+      topic.focus()
+    }
+    if (new URLSearchParams(location.search).get('state') === 'error') showError()
+    form.addEventListener('submit', event => {
+      event.preventDefault()
+      message.hidden = true
+      if (!topic.value.trim()) {
+        showError()
+        return
+      }
+      topic.removeAttribute('aria-invalid')
+      error.hidden = true
+      message.hidden = false
+    })
+  </script>
+</body>
+</html>

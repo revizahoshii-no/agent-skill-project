@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A modular web product skill system with selective routing, bounded context, and browser-verified examples.">
+  <meta name="theme-color" content="#f4f0e8">
+  <title>Selective Web Agent Skills</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="site-layout">
+    <nav class="site-nav" aria-label="Documentation">
+      <a class="site-brand" href="#top">Web Agent Skills</a>
+      <p>System</p>
+      <a href="#architecture">Architecture</a>
+      <a href="#loading-policy">Loading policy</a>
+      <p>Skills</p>
+      <a href="#design-direction">01 Design direction</a>
+      <a href="#interface-craft">02 Interface craft</a>
+      <a href="#responsive-mobile">03 Responsive mobile</a>
+      <a href="#accessibility">04 Accessibility</a>
+      <a href="#product-copy">05 Product copy</a>
+      <a href="#asset-image">06 Asset and image</a>
+      <a href="#performance">07 Performance</a>
+      <a href="#seo-security">08 SEO and security</a>
+      <a href="#browser-acceptance">09 Browser acceptance</a>
+      <a href="#release-delivery">10 Release and delivery</a>
+      <a href="#knowledge-retrieval">11 Knowledge retrieval</a>
+      <a href="#editorial-article">12 Editorial article</a>
+      <a href="#web-presentation">13 Web presentation</a>
+      <a href="#motion-showreel">14 Motion showreel</a>
+    </nav>
+
+    <main class="site-main" id="content">
+      <header class="hero" id="top">
+        <p class="eyebrow">Modular agent instructions for web product work</p>
+        <h1>Load less. Decide better.</h1>
+        <p class="lede">A lightweight router selects only the skills required for the current phase. Each domain stays independent, human guides remain optional, and browser evidence closes the loop.</p>
+        <div class="hero-meta">
+          <span>1 router</span>
+          <span>14 domain skills</span>
+          <span>2 primary skills maximum</span>
+          <span>1 supporting skill maximum</span>
+        </div>
+      </header>
+
+      <section class="doc-section" id="architecture" aria-labelledby="architecture-title">
+        <div class="section-head">
+          <span class="section-number">A.01</span>
+          <div>
+            <p class="eyebrow">Architecture</p>
+            <h2 id="architecture-title">Route first, load second.</h2>
+            <p class="section-intro">The entrypoint is intentionally small. It identifies the phase, reads the registry, and returns a bounded route plan. Domain instructions are opened only after that decision.</p>
+          </div>
+        </div>
+        <div class="architecture-grid">
+          <article class="architecture-card">
+            <span>01</span>
+            <h3>Router</h3>
+            <p>Classifies the request and chooses a small skill set. It contains no domain workflow.</p>
+          </article>
+          <article class="architecture-card">
+            <span>02</span>
+            <h3>Registry</h3>
+            <p>Records triggers, exclusions, phase, path, and pairing hints in machine-readable form.</p>
+          </article>
+          <article class="architecture-card">
+            <span>03</span>
+            <h3>Domain skill</h3>
+            <p>Owns one type of work, defines its evidence, and hands off when the phase changes.</p>
+          </article>
+        </div>
+        <pre class="code-block" aria-label="Example route plan"><code>entrypoint: skills/router/SKILL.md
+phase: implementation
+primary:
+  - skills/interface-craft/SKILL.md
+  - skills/responsive-mobile/SKILL.md
+supporting:
+  - skills/accessibility/SKILL.md</code></pre>
+      </section>
+
+      <section class="doc-section" id="loading-policy" aria-labelledby="policy-title">
+        <div class="section-head">
+          <span class="section-number">A.02</span>
+          <div>
+            <p class="eyebrow">Loading policy</p>
+            <h2 id="policy-title">Context has a budget.</h2>
+            <p class="section-intro">The system prevents recursive loading, avoids speculative references, and reroutes when work moves into a new phase.</p>
+          </div>
+        </div>
+        <div class="rule-grid">
+          <article class="rule-card">
+            <span>BOUND</span>
+            <h3>Two plus one</h3>
+            <p>Use no more than two primary skills and one supporting skill for a phase.</p>
+          </article>
+          <article class="rule-card">
+            <span>STOP</span>
+            <h3>No recursive loading</h3>
+            <p>A domain skill cannot open another domain skill. It returns to the router.</p>
+          </article>
+          <article class="rule-card">
+            <span>DEFER</span>
+            <h3>Guides stay optional</h3>
+            <p>Human documentation and screenshots never enter agent context automatically.</p>
+          </article>
+        </div>
+      </section>
+
+      <article class="skill" id="design-direction">
+        <header class="skill-header">
+          <span class="skill-number">01</span>
+          <div>
+            <h2>Design direction</h2>
+            <p class="skill-summary">Turns requirements into one coherent visual thesis before implementation begins. It records the page archetype, composition, type roles, palette, density, imagery, and motion posture.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/design-direction.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Starting a greenfield page, reconciling competing references, or repairing a visually incoherent interface.</p></div>
+          <div><h3>Produces</h3><p>A concise design read, explicit visual dials, and a written direction that implementation can test against.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/editorial.html"><img src="images/editorial-desktop.png" alt="Editorial landing page with large serif title and geometric paper image" width="1365" height="900"></a><figcaption>A strong thesis expressed through type scale, restrained color, and asymmetrical composition.</figcaption></figure>
+          <figure><a href="examples/presentation.html?slide=1"><img src="images/presentation-slide-1.png" alt="Presentation slide stating Start with one visual thesis" width="1365" height="900"></a><figcaption>A presentation frame that keeps hierarchy and palette consistent with the direction.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="interface-craft">
+        <header class="skill-header">
+          <span class="skill-number">02</span>
+          <div>
+            <h2>Interface craft</h2>
+            <p class="skill-summary">Builds interaction around real tasks and semantic controls. It favors explicit state, progressive disclosure, strong hierarchy, and the least complex implementation that preserves the intended experience.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/interface-craft.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Implementing forms, dashboards, navigation, filters, dialogs, empty states, or task flows.</p></div>
+          <div><h3>Produces</h3><p>A functional interface with defined states, visible feedback, semantic controls, and no decorative dead ends.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/workspace.html"><img src="images/workspace-desktop.png" alt="Operational review workspace with sidebar, filters, and queue items" width="1365" height="900"></a><figcaption>A task-first workspace with a clear queue, native checkboxes, and a working filter.</figcaption></figure>
+          <figure><a href="examples/form.html"><img src="images/form-default.png" alt="Focused brief form with labeled fields and a primary action" width="1200" height="850"></a><figcaption>A form whose visual hierarchy follows the completion path.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="responsive-mobile">
+        <header class="skill-header">
+          <span class="skill-number">03</span>
+          <div>
+            <h2>Responsive mobile</h2>
+            <p class="skill-summary">Designs narrow layouts as deliberate compositions rather than compressed desktop screens. It protects reading order, action reachability, touch targets, and overflow behavior.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/responsive-mobile.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Adapting a page across viewports, designing mobile navigation, or fixing clipping and hidden actions.</p></div>
+          <div><h3>Produces</h3><p>A mobile-first layout with explicit reflow rules and verified behavior near 400 CSS pixels.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/editorial.html"><img src="images/editorial-mobile.png" alt="Mobile editorial landing page with large wrapped title" width="390" height="844"></a><figcaption>The editorial hierarchy survives a narrow viewport without horizontal overflow.</figcaption></figure>
+          <figure><a href="examples/workspace.html"><img src="images/workspace-mobile.png" alt="Mobile review queue with horizontal navigation and stacked tasks" width="390" height="844"></a><figcaption>Dense workspace content reflows into readable, reachable task rows.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="accessibility">
+        <header class="skill-header">
+          <span class="skill-number">04</span>
+          <div>
+            <h2>Accessibility</h2>
+            <p class="skill-summary">Integrates keyboard behavior, focus, semantics, names, instructions, error recovery, contrast, zoom, and motion preferences into implementation and review.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/accessibility.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Building or auditing interactive UI, forms, media, navigation, dynamic updates, and custom controls.</p></div>
+          <div><h3>Produces</h3><p>Traceable findings with user impact, reproducible paths, and fixes applied at the correct layer.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/form.html"><img src="images/form-default.png" alt="Accessible form in its default state" width="1200" height="850"></a><figcaption>Every field has a visible label, predictable order, and native control semantics.</figcaption></figure>
+          <figure><a href="examples/form.html?state=error"><img src="images/form-error.png" alt="Accessible form showing a focused field and adjacent error message" width="1200" height="850"></a><figcaption>The error is associated with the field, visible in text, and accompanied by focus.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="product-copy">
+        <header class="skill-header">
+          <span class="skill-number">05</span>
+          <div>
+            <h2>Product copy</h2>
+            <p class="skill-summary">Writes interface and page copy from user intent, evidence, and product truth. It replaces generic slogans with specific language and never invents unsupported proof.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/product-copy.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Writing headlines, instructions, labels, errors, onboarding, calls to action, empty states, or concise product explanations.</p></div>
+          <div><h3>Produces</h3><p>A message hierarchy, evidence-aware draft, state copy, and a clear record of missing facts.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/editorial.html"><img src="images/editorial-desktop.png" alt="Editorial page with a specific objects worth keeping headline" width="1365" height="900"></a><figcaption>A headline and supporting line that express one concrete editorial premise.</figcaption></figure>
+          <figure><a href="examples/form.html"><img src="images/form-default.png" alt="Brief form using specific labels and instructions" width="1200" height="850"></a><figcaption>Labels describe the information needed while the action names its outcome.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="asset-image">
+        <header class="skill-header">
+          <span class="skill-number">06</span>
+          <div>
+            <h2>Asset and image</h2>
+            <p class="skill-summary">Chooses, generates, prepares, and places imagery with a defined role. It protects provenance, avoids accidental cropping, and treats alt text and loading behavior as part of the asset decision.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/asset-image.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>A page depends on photography, illustration, diagrams, generated visuals, icons, or media optimization.</p></div>
+          <div><h3>Produces</h3><p>An asset brief, source record, prepared files, placement rules, alt text, and loading strategy.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/editorial.html"><img src="images/editorial-desktop.png" alt="Geometric still life used as a structural editorial image" width="1365" height="900"></a><figcaption>The image carries the composition rather than filling an interchangeable card.</figcaption></figure>
+          <figure><a href="examples/article.html"><img src="images/article-desktop.png" alt="Long-form article with a paper architecture image" width="1365" height="900"></a><figcaption>The article figure supports the argument and includes a specific caption.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="performance">
+        <header class="skill-header">
+          <span class="skill-number">07</span>
+          <div>
+            <h2>Performance</h2>
+            <p class="skill-summary">Measures before changing code, traces findings to likely causes, and verifies improvements under comparable conditions. Lab observations never masquerade as field evidence.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/performance.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Investigating slow rendering, interaction delay, layout shift, bundle cost, media weight, or runtime work.</p></div>
+          <div><h3>Produces</h3><p>A reproducible baseline, prioritized hypotheses, minimal changes, and a before-and-after record.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/quality.html"><img src="images/quality-desktop.png" alt="Quality record separating measured checks from evidence notes" width="1365" height="900"></a><figcaption>A verification record states what was measured and what the result does not prove.</figcaption></figure>
+          <figure><a href="examples/editorial.html"><img src="images/editorial-mobile.png" alt="Mobile editorial page using one purposeful image" width="390" height="844"></a><figcaption>A simple media strategy keeps the narrow page visually strong without asset excess.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="seo-security">
+        <header class="skill-header">
+          <span class="skill-number">08</span>
+          <div>
+            <h2>SEO and security</h2>
+            <p class="skill-summary">Reviews discovery, metadata, crawl behavior, resource integrity, sensitive data handling, dependency risk, and deployment headers without turning heuristics into guarantees.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/seo-security.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Preparing public pages, changing routing or metadata, handling user input, adding dependencies, or reviewing production posture.</p></div>
+          <div><h3>Produces</h3><p>Verified metadata and security findings, risk-ranked fixes, and explicit limits on what was inspected.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/quality.html"><img src="images/quality-desktop.png" alt="Quality review page with runtime and production checks" width="1365" height="900"></a><figcaption>Public behavior and production responses are checked as evidence, not assumed from source.</figcaption></figure>
+          <figure><a href="examples/release.html"><img src="images/release-desktop.png" alt="Release gate showing credential and production verification" width="1365" height="900"></a><figcaption>The release gate keeps credential scans and deployed response checks visible.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="browser-acceptance">
+        <header class="skill-header">
+          <span class="skill-number">09</span>
+          <div>
+            <h2>Browser acceptance</h2>
+            <p class="skill-summary">Exercises the real interface at representative viewports and states. It collects console, network, screenshot, keyboard, and interaction evidence before a page is declared ready.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/browser-acceptance.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>A feature is implemented, a bug needs reproduction, or a release needs end-to-end proof.</p></div>
+          <div><h3>Produces</h3><p>Scenario-based acceptance records with viewport, path, expected result, actual result, and attached evidence.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/quality.html"><img src="images/quality-desktop.png" alt="Desktop browser acceptance record" width="1365" height="900"></a><figcaption>Desktop evidence captures runtime, layout, keyboard, and production checks.</figcaption></figure>
+          <figure><a href="examples/quality.html"><img src="images/quality-mobile.png" alt="Mobile browser acceptance record" width="390" height="844"></a><figcaption>The same evidence model remains readable and complete at a narrow viewport.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="release-delivery">
+        <header class="skill-header">
+          <span class="skill-number">10</span>
+          <div>
+            <h2>Release and delivery</h2>
+            <p class="skill-summary">Moves a verified artifact into production while preserving repository hygiene, credential safety, rollback awareness, deployment configuration, and post-deploy smoke evidence.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/release-delivery.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Preparing commits, creating a repository, configuring automation, deploying a site, or handing work to another operator.</p></div>
+          <div><h3>Produces</h3><p>A clean diff, validated automation, deployment record, public URL, smoke results, and remaining issue list.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/release.html"><img src="images/release-desktop.png" alt="Release checklist with passed build, credential, browser, and production checks" width="1365" height="900"></a><figcaption>A concise gate keeps evidence attached to each release condition.</figcaption></figure>
+          <figure><a href="examples/quality.html"><img src="images/quality-desktop.png" alt="Quality report used as release evidence" width="1365" height="900"></a><figcaption>Acceptance evidence feeds delivery rather than being recreated from memory.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="knowledge-retrieval">
+        <header class="skill-header">
+          <span class="skill-number">11</span>
+          <div>
+            <h2>Knowledge retrieval</h2>
+            <p class="skill-summary">Navigates structured local material progressively, reads the smallest useful branch, preserves provenance, and separates direct evidence from synthesis.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/knowledge-retrieval.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Answering from a document corpus, extracting product facts, comparing local records, or grounding downstream copy and design.</p></div>
+          <div><h3>Produces</h3><p>A scoped evidence map with file, section, page, or sheet references and clearly labeled unknowns.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/knowledge.html"><img src="images/knowledge-desktop.png" alt="Evidence map with file tree and retained excerpts" width="1365" height="900"></a><figcaption>The index narrows retrieval while each excerpt keeps a source location.</figcaption></figure>
+          <figure><a href="examples/article.html"><img src="images/article-desktop.png" alt="Article page showing a grounded visual argument" width="1365" height="900"></a><figcaption>Retrieved evidence can support a focused artifact without importing the entire corpus.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="editorial-article">
+        <header class="skill-header">
+          <span class="skill-number">12</span>
+          <div>
+            <h2>Editorial article</h2>
+            <p class="skill-summary">Shapes a long-form reading experience around argument, pace, hierarchy, figures, captions, references, and responsive typography.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/editorial-article.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Creating essays, explainers, research narratives, documentation chapters, or visual stories.</p></div>
+          <div><h3>Produces</h3><p>A structured article, reading hierarchy, figure plan, citation treatment, and a verified narrow layout.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/article.html"><img src="images/article-desktop.png" alt="Desktop editorial article with table of contents and pull quote" width="1365" height="900"></a><figcaption>Navigation, measure, image, caption, and margin note form one reading system.</figcaption></figure>
+          <figure><a href="examples/article.html"><img src="images/article-mobile.png" alt="Mobile editorial article with a readable title and stacked content" width="390" height="844"></a><figcaption>The article reorders into a clear single-column reading path.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="web-presentation">
+        <header class="skill-header">
+          <span class="skill-number">13</span>
+          <div>
+            <h2>Web presentation</h2>
+            <p class="skill-summary">Builds slide-like experiences as stable web stages with deliberate sequencing, keyboard navigation, legible type, and bounded motion.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/web-presentation.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Creating talks, product narratives, interactive decks, teaching sequences, or kiosk presentations.</p></div>
+          <div><h3>Produces</h3><p>A slide outline, stable stage, routeable states, working controls, and tested aspect-ratio behavior.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/presentation.html?slide=1"><img src="images/presentation-slide-1.png" alt="First web presentation slide with one visual thesis" width="1365" height="900"></a><figcaption>The opening frame introduces one idea with a strong, stable hierarchy.</figcaption></figure>
+          <figure><a href="examples/presentation.html?slide=2"><img src="images/presentation-slide-2.png" alt="Second web presentation slide about browser verification" width="1365" height="900"></a><figcaption>The next state advances the argument without changing the visual grammar.</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="skill" id="motion-showreel">
+        <header class="skill-header">
+          <span class="skill-number">14</span>
+          <div>
+            <h2>Motion showreel</h2>
+            <p class="skill-summary">Plans short visual sequences through beats, transitions, typography, framing, timing, and export constraints. Motion remains purposeful and compatible with reduced-motion preferences.</p>
+          </div>
+          <a class="guide-link" href="https://github.com/revizahoshii-no/agent-skill-project/blob/main/docs/guides/motion-showreel.md">Read guide</a>
+        </header>
+        <div class="skill-facts">
+          <div><h3>Use when</h3><p>Creating title sequences, launch reels, product motion studies, animated case-study moments, or concise brand films.</p></div>
+          <div><h3>Produces</h3><p>A beat sheet, style frames, timing plan, transition rules, reduced-motion path, and export checklist.</p></div>
+        </div>
+        <div class="shots">
+          <figure><a href="examples/motion.html?frame=1"><img src="images/motion-frame-1.png" alt="Dark motion style frame with the word Signal" width="1365" height="900"></a><figcaption>An opening style frame establishes scale, contrast, and directional energy.</figcaption></figure>
+          <figure><a href="examples/motion.html?frame=2"><img src="images/motion-frame-2.png" alt="Light motion style frame with the word Pause" width="1365" height="900"></a><figcaption>A contrasting beat changes the field while preserving type and color logic.</figcaption></figure>
+        </div>
+      </article>
+
+      <footer class="site-footer">
+        <strong>Small context. Explicit evidence. Clean handoffs.</strong>
+        <p>The agent entrypoint is the router. Human guides and browser screenshots are documentation only and are never loaded automatically.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

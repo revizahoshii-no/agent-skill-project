@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101115">
+  <title>Motion Frame Example</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body class="motion-page">
+  <main class="motion-frame" id="motionFrame">
+    <span class="motion-meta">STYLE FRAME / 02</span>
+    <h1 class="motion-word" id="motionWord">Signal</h1>
+    <span class="motion-line one" aria-hidden="true"></span>
+    <span class="motion-line two" aria-hidden="true"></span>
+    <a class="motion-time" id="motionLink" href="?frame=2">00:12 / next frame</a>
+  </main>
+  <script>
+    const isSecond = new URLSearchParams(location.search).get('frame') === '2'
+    const frame = document.querySelector('#motionFrame')
+    const word = document.querySelector('#motionWord')
+    const link = document.querySelector('#motionLink')
+    if (isSecond) {
+      frame.classList.add('frame-two')
+      word.textContent = 'Pause'
+      link.textContent = '00:13 / first frame'
+      link.href = '?frame=1'
+    }
+  </script>
+</body>
+</html>

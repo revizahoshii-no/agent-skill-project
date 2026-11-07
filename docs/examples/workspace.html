@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#202023">
+  <title>Operational Workspace Example</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <main class="workspace">
+    <nav class="workspace-side" aria-label="Workspace navigation">
+      <strong>Review desk</strong>
+      <a href="#queue" aria-current="page">Queue</a>
+      <a href="#summary">Summary</a>
+      <a href="#rules">Rules</a>
+    </nav>
+    <section class="workspace-main" id="queue" aria-labelledby="workspace-title">
+      <header class="workspace-top">
+        <div>
+          <p class="demo-kicker">Sample workspace</p>
+          <h1 id="workspace-title">Review queue</h1>
+        </div>
+        <div class="segmented" role="group" aria-label="Queue filter">
+          <button type="button" aria-pressed="true" data-filter="all">All</button>
+          <button type="button" aria-pressed="false" data-filter="open">Open</button>
+        </div>
+      </header>
+      <div class="queue-grid">
+        <section class="queue-list" aria-labelledby="queue-list-title">
+          <h2 class="queue-title" id="queue-list-title">Items ready for review</h2>
+          <label class="queue-item" data-state="open">
+            <input type="checkbox" name="item-1">
+            <span>
+              <h3>Confirm heading order</h3>
+              <p>Read the rendered outline and check the page hierarchy.</p>
+            </span>
+            <span class="status">Open</span>
+          </label>
+          <label class="queue-item" data-state="open">
+            <input type="checkbox" name="item-2">
+            <span>
+              <h3>Test narrow layout</h3>
+              <p>Verify the workspace reflows without hiding primary actions.</p>
+            </span>
+            <span class="status">Open</span>
+          </label>
+          <label class="queue-item" data-state="done">
+            <input type="checkbox" name="item-3" checked>
+            <span>
+              <h3>Check interaction labels</h3>
+              <p>Every action uses a specific name and a native control.</p>
+            </span>
+            <span class="status">Done</span>
+          </label>
+        </section>
+        <aside class="queue-aside" id="summary" aria-labelledby="summary-title">
+          <h2 id="summary-title">Current view</h2>
+          <dl>
+            <div><dt>Filter</dt><dd id="filterValue">All</dd></div>
+            <div><dt>Focus</dt><dd>Structure</dd></div>
+            <div id="rules"><dt>Mode</dt><dd>Review</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <script>
+    const buttons = document.querySelectorAll('[data-filter]')
+    const items = document.querySelectorAll('[data-state]')
+    const value = document.querySelector('#filterValue')
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.dataset.filter
+        buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)))
+        items.forEach(item => item.hidden = filter === 'open' && item.dataset.state !== 'open')
+        value.textContent = filter === 'open' ? 'Open' : 'All'
+      })
+    })
+  </script>
+</body>
+</html>

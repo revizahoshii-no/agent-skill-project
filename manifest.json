@@ -1,0 +1,14 @@
+{
+  "name": "agent-skill-project",
+  "version": "1.0.0",
+  "description": "Modular skills for web design, implementation, quality, research, and delivery.",
+  "entrypoint": "skills/router/SKILL.md",
+  "registry": "skills/registry.json",
+  "languages": ["en", "id"],
+  "loadPolicy": {
+    "maxPrimarySkills": 2,
+    "maxSupportingSkills": 1,
+    "preloadReferences": false,
+    "allowLoadAll": false
+  }
+}

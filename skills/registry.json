@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "loadPolicy": {
+    "maxPrimarySkills": 2,
+    "maxSupportingSkills": 1,
+    "preloadReferences": false,
+    "allowLoadAll": false,
+    "rerouteAtPhaseChange": true
+  },
+  "skills": [
+    {
+      "name": "router",
+      "path": "skills/router/SKILL.md",
+      "phase": "routing",
+      "triggers": ["choose a skill", "route a task", "unknown task type"],
+      "excludes": ["domain implementation"]
+    },
+    {
+      "name": "design-direction",
+      "path": "skills/design-direction/SKILL.md",
+      "phase": "planning",
+      "triggers": ["new website", "redesign", "visual direction", "design system", "style exploration"],
+      "excludes": ["backend-only task", "copy-only point edit"]
+    },
+    {
+      "name": "interface-craft",
+      "path": "skills/interface-craft/SKILL.md",
+      "phase": "implementation",
+      "triggers": ["build UI", "frontend implementation", "component states", "interaction polish"],
+      "excludes": ["backend-only task", "long-form article conversion"]
+    },
+    {
+      "name": "responsive-mobile",
+      "path": "skills/responsive-mobile/SKILL.md",
+      "phase": "implementation",
+      "triggers": ["mobile", "responsive", "overflow", "breakpoint", "touch navigation"],
+      "excludes": ["fixed print output"]
+    },
+    {
+      "name": "accessibility",
+      "path": "skills/accessibility/SKILL.md",
+      "phase": "implementation-and-review",
+      "triggers": ["accessibility", "keyboard", "focus", "contrast", "screen reader", "WCAG"],
+      "excludes": ["visual preference without usability impact"]
+    },
+    {
+      "name": "product-copy",
+      "path": "skills/product-copy/SKILL.md",
+      "phase": "content",
+      "triggers": ["copywriting", "rewrite copy", "headline", "CTA", "product positioning", "brand voice"],
+      "excludes": ["code-only change", "source-preserving article conversion"]
+    },
+    {
+      "name": "asset-image",
+      "path": "skills/asset-image/SKILL.md",
+      "phase": "asset-production",
+      "triggers": ["image generation", "image editing", "visual asset", "hero image", "brand asset inventory"],
+      "excludes": ["asset creation without approval"]
+    },
+    {
+      "name": "performance",
+      "path": "skills/performance/SKILL.md",
+      "phase": "optimization-and-review",
+      "triggers": ["performance", "Core Web Vitals", "LCP", "INP", "CLS", "Lighthouse", "page speed"],
+      "excludes": ["unmeasured ranking promise"]
+    },
+    {
+      "name": "seo-security",
+      "path": "skills/seo-security/SKILL.md",
+      "phase": "review-and-hardening",
+      "triggers": ["SEO", "metadata", "sitemap", "robots", "security headers", "CSP", "credential scan"],
+      "excludes": ["full penetration test", "guaranteed search ranking"]
+    },
+    {
+      "name": "browser-acceptance",
+      "path": "skills/browser-acceptance/SKILL.md",
+      "phase": "acceptance",
+      "triggers": ["browser QA", "responsive testing", "interaction testing", "visual acceptance", "cross-viewport check"],
+      "excludes": ["source inspection only"]
+    },
+    {
+      "name": "release-delivery",
+      "path": "skills/release-delivery/SKILL.md",
+      "phase": "release",
+      "triggers": ["ship", "deploy", "release", "push", "production smoke test", "delivery report"],
+      "excludes": ["design exploration"]
+    },
+    {
+      "name": "knowledge-retrieval",
+      "path": "skills/knowledge-retrieval/SKILL.md",
+      "phase": "research",
+      "triggers": ["search local files", "knowledge base", "find in documents", "PDF research", "spreadsheet research"],
+      "excludes": ["open web research unless requested"]
+    },
+    {
+      "name": "editorial-article",
+      "path": "skills/editorial-article/SKILL.md",
+      "phase": "editorial-production",
+      "triggers": ["long-form HTML", "web article", "source to article", "visual essay", "briefing page"],
+      "excludes": ["application", "dashboard", "marketing landing page"]
+    },
+    {
+      "name": "web-presentation",
+      "path": "skills/web-presentation/SKILL.md",
+      "phase": "presentation-production",
+      "triggers": ["web presentation", "slide deck", "recordable presentation", "chapter and step navigation"],
+      "excludes": ["ordinary website", "free-running motion film"]
+    },
+    {
+      "name": "motion-showreel",
+      "path": "skills/motion-showreel/SKILL.md",
+      "phase": "motion-production",
+      "triggers": ["motion showreel", "code-rendered video", "kinetic typography", "timed visual sequence"],
+      "excludes": ["ordinary website", "click-driven slide deck"]
+    }
+  ]
+}

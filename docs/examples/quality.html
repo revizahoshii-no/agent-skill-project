@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f0e8">
+  <title>Quality Review Example</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <main class="quality-page demo-shell">
+    <header class="quality-head">
+      <div>
+        <p class="demo-kicker">Example acceptance record</p>
+        <h1>Quality review</h1>
+      </div>
+      <p>Measured checks and source hypotheses stay separate.</p>
+    </header>
+    <div class="audit-grid">
+      <section class="audit-list" aria-label="Verified checks">
+        <article class="audit-row">
+          <strong>Runtime</strong>
+          <p>Primary page and local assets loaded without browser errors.</p>
+          <span class="audit-pass">Pass</span>
+        </article>
+        <article class="audit-row">
+          <strong>Layout</strong>
+          <p>No horizontal overflow across the agreed viewport range.</p>
+          <span class="audit-pass">Pass</span>
+        </article>
+        <article class="audit-row">
+          <strong>Keyboard</strong>
+          <p>Focus order, activation, and Escape behavior were exercised.</p>
+          <span class="audit-pass">Pass</span>
+        </article>
+        <article class="audit-row">
+          <strong>Production</strong>
+          <p>Headers and public resources were requested from the deployed URL.</p>
+          <span class="audit-pass">Pass</span>
+        </article>
+      </section>
+      <aside class="audit-note">
+        <p class="demo-kicker" style="color:#f5a89f">Evidence rule</p>
+        <h2>Say what was measured.</h2>
+        <p>A clean score does not replace keyboard testing, content review, security analysis, or real-user field data.</p>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
