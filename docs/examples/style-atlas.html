@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A decision-led atlas of twenty website style directions organized by product, audience, content, identity, and visual energy.">
+  <meta name="theme-color" content="#151515">
+  <title>Style Atlas - Twenty Website Directions</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #151515;
+      --paper: #f4f0e7;
+      --cream: #fffaf0;
+      --acid: #d8ff3e;
+      --coral: #ff684e;
+      --blue: #2853d8;
+      --line: rgba(21, 21, 21, .25);
+      --sans: Arial, Helvetica, sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+      --mono: "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+    body { margin: 0; min-width: 280px; overflow-x: hidden; }
+    img { display: block; width: 100%; height: auto; }
+    a { color: inherit; }
+    a:focus-visible { outline: 3px solid var(--acid); outline-offset: 4px; }
+    .skip-link { position: fixed; z-index: 30; top: 12px; left: 12px; transform: translateY(-160%); padding: 12px 16px; color: var(--ink); background: var(--acid); font-weight: 800; }
+    .skip-link:focus { transform: none; }
+
+    .topbar {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 12px clamp(18px, 4vw, 58px);
+      color: var(--paper);
+      background: var(--ink);
+      border-bottom: 1px solid #383838;
+    }
+
+    .brand { font: 700 15px/1 var(--mono); letter-spacing: .04em; text-decoration: none; }
+    .topbar p { margin: 0; color: #bdbab2; font: 11px/1.4 var(--mono); text-align: right; }
+
+    .hero {
+      min-height: 610px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      color: var(--paper);
+      background: var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .hero-copy { display: grid; align-content: end; padding: clamp(44px, 7vw, 96px) clamp(22px, 5.5vw, 80px); }
+    .kicker { margin: 0 0 22px; color: var(--acid); font: 700 11px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    h1 { max-width: 950px; margin: 0; font: 400 clamp(64px, 10vw, 146px)/.78 var(--serif); letter-spacing: -.075em; text-wrap: balance; }
+    .hero-lede { max-width: 680px; margin: 38px 0 0; color: #cfccc3; font-size: clamp(17px, 1.8vw, 23px); line-height: 1.5; }
+
+    .hero-index {
+      display: grid;
+      align-content: space-between;
+      gap: 30px;
+      padding: clamp(34px, 5vw, 68px) clamp(22px, 4vw, 54px);
+      color: var(--ink);
+      background: var(--acid);
+    }
+
+    .hero-index strong { display: block; font: 400 clamp(86px, 13vw, 176px)/.75 var(--serif); letter-spacing: -.08em; }
+    .hero-index p { max-width: 320px; margin: 0; font-size: 14px; line-height: 1.55; }
+    .hero-index a { width: max-content; max-width: 100%; display: inline-flex; align-items: center; min-height: 44px; padding: 0 15px; border: 1px solid currentColor; font-size: 12px; font-weight: 800; text-decoration: none; }
+
+    .compass { padding: 72px clamp(20px, 5.5vw, 80px) 84px; background: var(--paper); border-bottom: 1px solid var(--ink); }
+    .section-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, .38fr); gap: 36px; align-items: end; margin-bottom: 44px; }
+    .section-heading h2 { max-width: 920px; margin: 0; font: 400 clamp(48px, 7vw, 96px)/.88 var(--serif); letter-spacing: -.055em; }
+    .section-heading p { margin: 0; color: #5e5a53; font-size: 15px; line-height: 1.65; }
+
+    .dimension-grid { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--ink); }
+    .dimension { min-width: 0; min-height: 220px; padding: 20px; border-right: 1px solid var(--ink); background: var(--cream); }
+    .dimension:last-child { border-right: 0; }
+    .dimension span { color: var(--coral); font: 700 11px var(--mono); }
+    .dimension h3 { margin: 40px 0 12px; font: 400 25px/1 var(--serif); }
+    .dimension p { margin: 0; color: #68635b; font-size: 13px; line-height: 1.55; }
+
+    .families { background: var(--paper); }
+    .atlas-group { padding: 78px clamp(20px, 5.5vw, 80px) 92px; border-bottom: 1px solid var(--ink); }
+    .atlas-group:nth-child(1) { --group-bg: #efefec; --group-accent: #222; background: #efefec; }
+    .atlas-group:nth-child(2) { --group-bg: #e9dcc4; --group-accent: #274b36; background: #e9dcc4; }
+    .atlas-group:nth-child(3) { --group-bg: #e7eeff; --group-accent: #2853d8; background: #e7eeff; }
+    .atlas-group:nth-child(4) { --group-bg: #ffd3e1; --group-accent: #8c244a; background: #ffd3e1; }
+
+    .group-head { display: grid; grid-template-columns: 76px minmax(0, 1fr) minmax(230px, .4fr); gap: 22px; align-items: start; margin-bottom: 44px; }
+    .group-number { padding-top: 7px; color: var(--group-accent); font: 700 12px var(--mono); }
+    .group-head h2 { margin: 0; font: 400 clamp(44px, 6vw, 80px)/.9 var(--serif); letter-spacing: -.05em; }
+    .group-head p { margin: 6px 0 0; color: #514d47; font-size: 14px; line-height: 1.65; }
+
+    .reference-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 26px; }
+    .reference-card { min-width: 0; grid-column: span 4; display: grid; align-content: start; background: rgba(255,255,255,.55); border: 1px solid var(--ink); }
+    .reference-card:nth-child(1), .reference-card:nth-child(2) { grid-column: span 6; }
+    .reference-media { aspect-ratio: 1.47 / 1; overflow: hidden; background: #d7d3cb; border-bottom: 1px solid var(--ink); }
+    .reference-media img { height: 100%; object-fit: cover; object-position: top; }
+    .reference-body { padding: 20px; }
+    .reference-meta { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 20px; color: var(--group-accent); font: 700 10px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+    .reference-body h3 { margin: 0; font: 400 clamp(25px, 2.5vw, 38px)/1 var(--serif); letter-spacing: -.035em; }
+    .reference-body > p { min-height: 64px; margin: 14px 0 18px; color: #5b5650; font-size: 13px; line-height: 1.6; }
+    .recipe { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; }
+    .recipe div { min-width: 0; padding-top: 9px; border-top: 1px solid var(--line); }
+    .recipe dt { margin: 0 0 4px; color: #777068; font: 700 9px/1.3 var(--mono); text-transform: uppercase; }
+    .recipe dd { margin: 0; font-size: 11px; line-height: 1.4; overflow-wrap: anywhere; }
+
+    .brief { display: grid; grid-template-columns: minmax(0, .65fr) minmax(0, 1.35fr); background: var(--ink); color: var(--paper); border-bottom: 1px solid #383838; }
+    .brief-intro { padding: 76px clamp(22px, 5.5vw, 80px); border-right: 1px solid #414141; }
+    .brief-intro h2 { margin: 0; font: 400 clamp(50px, 7vw, 96px)/.88 var(--serif); letter-spacing: -.055em; }
+    .brief-intro p { max-width: 520px; margin: 28px 0 0; color: #c7c3ba; font-size: 15px; line-height: 1.65; }
+    .brief-template { padding: 76px clamp(22px, 5.5vw, 80px); }
+    .brief-row { display: grid; grid-template-columns: 42px minmax(0, 1fr) minmax(140px, .42fr); gap: 18px; padding: 20px 0; border-bottom: 1px solid #414141; }
+    .brief-row:first-child { border-top: 1px solid #414141; }
+    .brief-row span { color: var(--acid); font: 700 11px var(--mono); }
+    .brief-row strong { font: 400 22px var(--serif); }
+    .brief-row p { margin: 0; color: #a8a49d; font-size: 12px; line-height: 1.5; }
+
+    footer { display: flex; justify-content: space-between; gap: 24px; padding: 30px clamp(20px, 5.5vw, 80px); color: #bdb9b0; background: var(--ink); font: 11px/1.5 var(--mono); }
+    footer p { margin: 0; max-width: 640px; }
+    footer a { color: var(--acid); }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-index { grid-template-columns: minmax(0, .45fr) minmax(0, 1fr); align-items: end; }
+      .hero-index a { grid-column: 2; }
+      .section-heading, .group-head, .brief { grid-template-columns: 1fr; }
+      .dimension-grid { grid-template-columns: repeat(2, 1fr); }
+      .dimension { border-bottom: 1px solid var(--ink); }
+      .dimension:nth-child(even) { border-right: 0; }
+      .dimension:last-child { grid-column: 1 / -1; border-bottom: 0; }
+      .reference-card, .reference-card:nth-child(1), .reference-card:nth-child(2) { grid-column: span 6; }
+      .brief-intro { border-right: 0; border-bottom: 1px solid #414141; }
+    }
+
+    @media (max-width: 620px) {
+      .topbar { align-items: flex-start; }
+      .topbar p { max-width: 140px; }
+      .hero { min-height: auto; }
+      .hero-copy { min-height: 540px; }
+      h1 { font-size: clamp(58px, 20vw, 86px); }
+      .hero-index { grid-template-columns: 1fr; }
+      .hero-index a { grid-column: 1; }
+      .section-heading { gap: 20px; }
+      .dimension-grid { grid-template-columns: 1fr; }
+      .dimension, .dimension:nth-child(even), .dimension:last-child { grid-column: auto; border-right: 0; border-bottom: 1px solid var(--ink); }
+      .dimension:last-child { border-bottom: 0; }
+      .group-head { grid-template-columns: 42px minmax(0, 1fr); }
+      .group-head p { grid-column: 2; }
+      .reference-grid { grid-template-columns: 1fr; }
+      .reference-card, .reference-card:nth-child(1), .reference-card:nth-child(2) { grid-column: auto; }
+      .reference-body > p { min-height: 0; }
+      .brief-row { grid-template-columns: 32px minmax(0, 1fr); }
+      .brief-row p { grid-column: 2; }
+      footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to atlas</a>
+  <header class="topbar">
+    <a class="brand" href="../index.html">AGENT SKILL PROJECT / STYLE ATLAS</a>
+    <p>20 supplied references · 4 families · 1 bounded decision</p>
+  </header>
+
+  <main id="content">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker">Website direction field guide</p>
+        <h1 id="hero-title">Choose a visual language, not a vibe.</h1>
+        <p class="hero-lede">A website style earns its place when it fits the product, audience, content, identity source, and intended energy. This atlas turns twenty references into reusable decisions instead of a gallery to copy.</p>
+      </div>
+      <aside class="hero-index" aria-label="Atlas summary">
+        <strong>20</strong>
+        <p>Directions range from restrained product luxury to early-web personality, character-led editorial, organic commerce, and neo-brutal systems.</p>
+        <a href="#families">Enter the atlas</a>
+      </aside>
+    </section>
+
+    <section class="compass" aria-labelledby="compass-title">
+      <div class="section-heading">
+        <h2 id="compass-title">Five dials before style.</h2>
+        <p>Set these variables first. Then select one foundation family and, only when needed, one restrained accent influence.</p>
+      </div>
+      <div class="dimension-grid">
+        <article class="dimension"><span>01</span><h3>Product</h3><p>Object, service, catalog, story, tool, profile, or community.</p></article>
+        <article class="dimension"><span>02</span><h3>Audience</h3><p>Expectation, confidence, cultural fluency, and browsing posture.</p></article>
+        <article class="dimension"><span>03</span><h3>Content</h3><p>Image volume, narrative length, data density, and update rhythm.</p></article>
+        <article class="dimension"><span>04</span><h3>Identity</h3><p>Led by product form, typography, photography, illustration, or system UI.</p></article>
+        <article class="dimension"><span>05</span><h3>Energy</h3><p>Quiet, warm, vivid, kinetic, nostalgic, or deliberately confrontational.</p></article>
+      </div>
+    </section>
+
+    <div class="families" id="families">
+      <section class="atlas-group" aria-labelledby="family-one">
+        <header class="group-head">
+          <span class="group-number">F.01</span>
+          <h2 id="family-one">Restrained product systems</h2>
+          <p>For products that should feel considered before they feel expressive. Precision, negative space, tactile imagery, and typography carry trust.</p>
+        </header>
+        <div class="reference-grid">
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/quiet-product.jpg" alt="Dark minimal product landing page with a sculptural object and narrow navigation"></div>
+            <div class="reference-body"><div class="reference-meta"><span>01 · Quiet luxury</span><span>Energy 1/5</span></div><h3>Sculptural product</h3><p>Best for a single premium object whose material, silhouette, and acoustic or tactile quality are the main story.</p><dl class="recipe"><div><dt>Grid</dt><dd>Centered, cinematic field</dd></div><div><dt>Type</dt><dd>Quiet sans, small labels</dd></div><div><dt>Color</dt><dd>Charcoal plus one signal</dd></div><div><dt>Motion</dt><dd>Slow reveal, no bounce</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/monochrome-fashion.jpg" alt="Black and white fashion commerce page with a cutout figure and compact product cards"></div>
+            <div class="reference-body"><div class="reference-meta"><span>02 · Monochrome fashion</span><span>Energy 3/5</span></div><h3>Graphic fashion catalog</h3><p>Best for limited collections where silhouette, attitude, and a strict black-and-white system create the brand voice.</p><dl class="recipe"><div><dt>Grid</dt><dd>Asymmetric catalog</dd></div><div><dt>Type</dt><dd>Editorial serif plus utility</dd></div><div><dt>Color</dt><dd>Black, white, one product tint</dd></div><div><dt>Motion</dt><dd>Hard cuts and image swaps</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/arctic-catalog.jpg" alt="Pale blue technical catalog with outerwear photography and cold-weather product details"></div>
+            <div class="reference-body"><div class="reference-meta"><span>03 · Arctic catalog</span><span>Energy 2/5</span></div><h3>Technical expedition</h3><p>Best for performance apparel, equipment, and collections that need both environmental mood and specification clarity.</p><dl class="recipe"><div><dt>Grid</dt><dd>Editorial catalog bands</dd></div><div><dt>Type</dt><dd>Extended sans plus mono</dd></div><div><dt>Color</dt><dd>Ice, stone, safety orange</dd></div><div><dt>Motion</dt><dd>Horizontal field transitions</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/botanical-skincare.jpg" alt="Cream skincare commerce page with botanical imagery, serif headlines, and product cards"></div>
+            <div class="reference-body"><div class="reference-meta"><span>04 · Botanical skincare</span><span>Energy 2/5</span></div><h3>Clinical botanical</h3><p>Best for care products that need ingredient warmth without losing evidence, routine, and product hierarchy.</p><dl class="recipe"><div><dt>Grid</dt><dd>Editorial shop modules</dd></div><div><dt>Type</dt><dd>Soft serif plus clean sans</dd></div><div><dt>Color</dt><dd>Ivory, moss, clay</dd></div><div><dt>Motion</dt><dd>Gentle product staging</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/quiet-writer.jpg" alt="Minimal cream writer website with a large serif title and a small circular portrait"></div>
+            <div class="reference-body"><div class="reference-meta"><span>05 · Quiet writer</span><span>Energy 1/5</span></div><h3>Literary restraint</h3><p>Best for authors and thinkers whose authority should come from language, rhythm, and a few deliberate personal details.</p><dl class="recipe"><div><dt>Grid</dt><dd>Wide text-led composition</dd></div><div><dt>Type</dt><dd>Large literary serif</dd></div><div><dt>Color</dt><dd>Warm paper and ink</dd></div><div><dt>Motion</dt><dd>Almost static</dd></div></dl></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="atlas-group" aria-labelledby="family-two">
+        <header class="group-head">
+          <span class="group-number">F.02</span>
+          <h2 id="family-two">Organic editorial commerce</h2>
+          <p>For brands built on origin, craft, place, or care. Natural assets set atmosphere while structured content keeps the product legible.</p>
+        </header>
+        <div class="reference-grid">
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/botanical-corporate.jpg" alt="Sustainable corporate website with green botanical photography and strong business typography"></div>
+            <div class="reference-body"><div class="reference-meta"><span>06 · Eco corporate</span><span>Energy 2/5</span></div><h3>Botanical authority</h3><p>Best for sustainability, architecture, and consulting where natural imagery must support credible operational content.</p><dl class="recipe"><div><dt>Grid</dt><dd>Corporate editorial bands</dd></div><div><dt>Type</dt><dd>Bold sans with measured body</dd></div><div><dt>Color</dt><dd>Forest, leaf, off-white</dd></div><div><dt>Motion</dt><dd>Section-led reveal</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/coffee-commerce.jpg" alt="Warm coffee store page with product packaging, beans, and a playful circular headline"></div>
+            <div class="reference-body"><div class="reference-meta"><span>07 · Coffee commerce</span><span>Energy 4/5</span></div><h3>Joyful roastery</h3><p>Best for direct-to-consumer food products that can use packaging, origin, and ritual as a lively purchase path.</p><dl class="recipe"><div><dt>Grid</dt><dd>Hero object plus shop rail</dd></div><div><dt>Type</dt><dd>Rounded display plus utility</dd></div><div><dt>Color</dt><dd>Cream, cocoa, citrus green</dd></div><div><dt>Motion</dt><dd>Object drift and cart feedback</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/warm-coffee.jpg" alt="Cream coffee editorial site with a large cup, dark green navigation, and warm story sections"></div>
+            <div class="reference-body"><div class="reference-meta"><span>08 · Warm coffee editorial</span><span>Energy 2/5</span></div><h3>Slow ritual</h3><p>Best for cafes, hospitality, and origin-led products that need calm storytelling before a reservation or purchase.</p><dl class="recipe"><div><dt>Grid</dt><dd>Centered object with text bands</dd></div><div><dt>Type</dt><dd>Humanist serif and caps</dd></div><div><dt>Color</dt><dd>Butter, brown, deep green</dd></div><div><dt>Motion</dt><dd>Soft scroll pacing</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/soft-editorial-proposal.jpg" alt="Blue editorial service concept with abstract forms, process blocks, and calm typography"></div>
+            <div class="reference-body"><div class="reference-meta"><span>09 · Soft editorial proposal</span><span>Energy 2/5</span></div><h3>Reflective service</h3><p>Best for consultancies and cultural services whose process, values, and collaboration model need a gentle visual frame.</p><dl class="recipe"><div><dt>Grid</dt><dd>Layered proposal sections</dd></div><div><dt>Type</dt><dd>Airy display plus neutral sans</dd></div><div><dt>Color</dt><dd>Powder blue and cream</dd></div><div><dt>Motion</dt><dd>Quiet floating accents</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/warm-author-editorial.jpg" alt="Warm author website with a red serif title, portrait photography, and generous margins"></div>
+            <div class="reference-body"><div class="reference-meta"><span>10 · Warm author editorial</span><span>Energy 2/5</span></div><h3>Personal publication</h3><p>Best for writers, coaches, and independent practices where biography and published thinking share equal weight.</p><dl class="recipe"><div><dt>Grid</dt><dd>Magazine-led profile</dd></div><div><dt>Type</dt><dd>Expressive serif and plain sans</dd></div><div><dt>Color</dt><dd>Apricot, oxblood, cream</dd></div><div><dt>Motion</dt><dd>Reading-first transitions</dd></div></dl></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="atlas-group" aria-labelledby="family-three">
+        <header class="group-head">
+          <span class="group-number">F.03</span>
+          <h2 id="family-three">Character-led editorial</h2>
+          <p>For worlds, stories, fandoms, and personality-rich profiles. Character art sets the identity; typography and panels control the narrative.</p>
+        </header>
+        <div class="reference-grid">
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/manga-dossier.jpg" alt="Manga character profile in a clean black and white editorial composition"></div>
+            <div class="reference-body"><div class="reference-meta"><span>11 · Manga dossier</span><span>Energy 3/5</span></div><h3>Monochrome character study</h3><p>Best for a focused biography or chapter where expression, quoted dialogue, and visual silence carry the page.</p><dl class="recipe"><div><dt>Grid</dt><dd>Portrait plus annotation</dd></div><div><dt>Type</dt><dd>Condensed display and serif</dd></div><div><dt>Color</dt><dd>Black, paper, one gray</dd></div><div><dt>Motion</dt><dd>Panel wipes and focus shifts</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/blue-character-editorial.jpg" alt="Blue character editorial site with large profile art and modular story panels"></div>
+            <div class="reference-body"><div class="reference-meta"><span>12 · Blue anime editorial</span><span>Energy 3/5</span></div><h3>Cool character archive</h3><p>Best for personality-led profiles that balance a strong hero portrait with facts, quotes, and supporting scenes.</p><dl class="recipe"><div><dt>Grid</dt><dd>Oversized hero and card archive</dd></div><div><dt>Type</dt><dd>Heavy sans plus mono labels</dd></div><div><dt>Color</dt><dd>Sky, ink, cool white</dd></div><div><dt>Motion</dt><dd>Directional panel slides</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/orange-manga.jpg" alt="Orange manga sports editorial with bold modular panels and dynamic character crops"></div>
+            <div class="reference-body"><div class="reference-meta"><span>13 · Orange manga modular</span><span>Energy 5/5</span></div><h3>Athletic chapter system</h3><p>Best for high-energy stories where cropped action, modular statistics, and bold numbering create momentum.</p><dl class="recipe"><div><dt>Grid</dt><dd>Dense modular panels</dd></div><div><dt>Type</dt><dd>Compressed sans and numerals</dd></div><div><dt>Color</dt><dd>Orange, black, paper</dd></div><div><dt>Motion</dt><dd>Fast directional cuts</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/soft-character-dashboard.jpg" alt="Soft blue character dashboard with navigation cards, profile panels, and aquatic graphics"></div>
+            <div class="reference-body"><div class="reference-meta"><span>14 · Soft character dashboard</span><span>Energy 3/5</span></div><h3>Friendly world hub</h3><p>Best for a creator, mascot, or community hub that combines profile content with clear modular navigation.</p><dl class="recipe"><div><dt>Grid</dt><dd>Dashboard of themed cards</dd></div><div><dt>Type</dt><dd>Rounded sans and compact labels</dd></div><div><dt>Color</dt><dd>Aqua, navy, white</dd></div><div><dt>Motion</dt><dd>Buoyant hover and bubbles</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/cinematic-dossier.jpg" alt="Dark cinematic character dossier with a dramatic portrait and editorial red details"></div>
+            <div class="reference-body"><div class="reference-meta"><span>15 · Cinematic dossier</span><span>Energy 4/5</span></div><h3>Dark narrative profile</h3><p>Best for antagonists, thrillers, games, and music identities that require tension without sacrificing reading order.</p><dl class="recipe"><div><dt>Grid</dt><dd>Cinematic hero plus case notes</dd></div><div><dt>Type</dt><dd>Display serif and coded mono</dd></div><div><dt>Color</dt><dd>Black, bone, blood red</dd></div><div><dt>Motion</dt><dd>Masked reveals and grain</dd></div></dl></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="atlas-group" aria-labelledby="family-four">
+        <header class="group-head">
+          <span class="group-number">F.04</span>
+          <h2 id="family-four">Playful personal and system</h2>
+          <p>For projects where authored imperfection, nostalgia, illustration, or conspicuous interface rules are part of the meaning.</p>
+        </header>
+        <div class="reference-grid">
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/illustrated-travel.jpg" alt="Illustrated travel discovery dashboard with destination cards, maps, and playful icons"></div>
+            <div class="reference-body"><div class="reference-meta"><span>16 · Illustrated travel</span><span>Energy 4/5</span></div><h3>Destination discovery map</h3><p>Best for exploration tools where geography, recommendations, and cheerful illustration should feel approachable.</p><dl class="recipe"><div><dt>Grid</dt><dd>Search-led dashboard</dd></div><div><dt>Type</dt><dd>Friendly sans with pictograms</dd></div><div><dt>Color</dt><dd>Sea blue, sun yellow, coral</dd></div><div><dt>Motion</dt><dd>Map pins and card staging</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/early-web-personal.jpg" alt="Early web personal homepage with a green desktop background, window panels, and sticker graphics"></div>
+            <div class="reference-body"><div class="reference-meta"><span>17 · Early-web personal</span><span>Energy 4/5</span></div><h3>Desktop memory box</h3><p>Best for personal archives, fan pages, and portfolios where discovery and nostalgic interface objects are the point.</p><dl class="recipe"><div><dt>Grid</dt><dd>Windowed desktop collage</dd></div><div><dt>Type</dt><dd>Bitmap and system sans</dd></div><div><dt>Color</dt><dd>Desktop green and bright chrome</dd></div><div><dt>Motion</dt><dd>Open, drag, blink sparingly</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/hand-drawn-social.jpg" alt="Pink hand-drawn social profile inspired by a scrapbook interface with doodles and photos"></div>
+            <div class="reference-body"><div class="reference-meta"><span>18 · Hand-drawn social</span><span>Energy 5/5</span></div><h3>Scrapbook network</h3><p>Best for intimate communities and personal stories where doodles, notes, and imperfect frames communicate authorship.</p><dl class="recipe"><div><dt>Grid</dt><dd>Collaged social feed</dd></div><div><dt>Type</dt><dd>Marker display plus sturdy sans</dd></div><div><dt>Color</dt><dd>Pink, white, cobalt</dd></div><div><dt>Motion</dt><dd>Sticker pops and scribble trails</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/neo-brutal-system.jpg" alt="Neo-brutalist dashboard with yellow panels, black borders, charts, and block controls"></div>
+            <div class="reference-body"><div class="reference-meta"><span>19 · Neo-brutal system</span><span>Energy 5/5</span></div><h3>Conspicuous operations</h3><p>Best for tools and playful services where visible structure, loud state changes, and direct controls are part of the brand.</p><dl class="recipe"><div><dt>Grid</dt><dd>Hard-edged bento</dd></div><div><dt>Type</dt><dd>Heavy grotesk and mono</dd></div><div><dt>Color</dt><dd>Yellow, black, white, red</dd></div><div><dt>Motion</dt><dd>Snap, stamp, press</dd></div></dl></div>
+          </article>
+          <article class="reference-card">
+            <div class="reference-media"><img src="assets/style-atlas/pastel-profile.jpg" alt="Pastel hand-drawn profile page with casual notes, photos, and playful decorative marks"></div>
+            <div class="reference-body"><div class="reference-meta"><span>20 · Pastel profile</span><span>Energy 3/5</span></div><h3>Handmade life page</h3><p>Best for an approachable personal profile, small publication, or domestic project with casual stories and snapshots.</p><dl class="recipe"><div><dt>Grid</dt><dd>Loose page collage</dd></div><div><dt>Type</dt><dd>Hand lettering plus plain sans</dd></div><div><dt>Color</dt><dd>Powder pink, aqua, yellow</dd></div><div><dt>Motion</dt><dd>Paper shifts and small reveals</dd></div></dl></div>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section class="brief" aria-labelledby="brief-title">
+      <div class="brief-intro">
+        <p class="kicker">Decision template</p>
+        <h2 id="brief-title">Leave with a buildable direction.</h2>
+        <p>Do not return a pile of mood words. Record one foundation, the reason it fits, implementation dials, and the choices that are intentionally excluded.</p>
+      </div>
+      <div class="brief-template">
+        <div class="brief-row"><span>01</span><strong>Foundation family</strong><p>One family, one named direction, one reason.</p></div>
+        <div class="brief-row"><span>02</span><strong>Audience posture</strong><p>How the visitor should feel and act.</p></div>
+        <div class="brief-row"><span>03</span><strong>Content geometry</strong><p>Story, catalog, task, profile, or archive.</p></div>
+        <div class="brief-row"><span>04</span><strong>Identity source</strong><p>Product, type, image, illustration, or interface.</p></div>
+        <div class="brief-row"><span>05</span><strong>Implementation dials</strong><p>Grid, type, color, density, imagery, motion.</p></div>
+        <div class="brief-row"><span>06</span><strong>Guardrails</strong><p>What not to copy, mix, fabricate, or overanimate.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>The supplied references are used as compositional studies. Reuse their relationships, not protected characters, brands, copy, or distinctive identity assets.</p>
+    <a href="../index.html#style-atlas">Return to documentation</a>
+  </footer>
+</body>
+</html>

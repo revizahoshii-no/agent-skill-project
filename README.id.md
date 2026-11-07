@@ -13,7 +13,7 @@ Sistem skill modular untuk pekerjaan software dan produk web dengan pemuatan sel
 Bundel instruksi besar menghabiskan konteks sebelum agent memahami tugas. Repository ini menggunakan model yang lebih terbatas:
 
 - satu entrypoint routing yang ringan;
-- delapan belas skill domain mandiri;
+- dua puluh satu skill domain mandiri;
 - tidak ada pemuatan skill secara rekursif;
 - tidak ada perintah untuk memuat seluruh kumpulan skill;
 - panduan manusia dan screenshot tidak dimuat otomatis;
@@ -80,7 +80,10 @@ Router tidak berisi workflow domain. Skill domain tidak boleh membuka skill doma
 | Skill | Gunakan saat | Panduan manusia |
 | --- | --- | --- |
 | Design direction | Tesis visual atau komposisi belum jelas | [Panduan](docs/guides/design-direction.md) |
+| Style atlas | Memilih di antara banyak style website atau menerjemahkan referensi menjadi satu arah yang dapat dibangun | [Panduan](docs/guides/style-atlas.md) |
+| Color systems | Memilih role palet, mengambil hubungan warna dari referensi, memasangkan tema, atau memperbaiki kontras | [Panduan](docs/guides/color-systems.md) |
 | Interface craft | Membangun form, navigasi, dashboard, kontrol, atau alur tugas | [Panduan](docs/guides/interface-craft.md) |
+| Loading experience | Mendesain loader, progress, skeleton, feedback bertahap, dan recovery saat menunggu | [Panduan](docs/guides/loading-experience.md) |
 | Responsive mobile | Reflow, sentuhan, overflow, atau layar sempit perlu ditangani | [Panduan](docs/guides/responsive-mobile.md) |
 | Accessibility | Memeriksa semantik, keyboard, fokus, error, kontras, atau motion | [Panduan](docs/guides/accessibility.md) |
 | Product copy | Menulis bahasa halaman atau antarmuka berdasarkan fakta produk | [Panduan](docs/guides/product-copy.md) |
@@ -106,6 +109,8 @@ Setiap panduan skill memiliki minimal dua screenshot dari halaman demo yang bena
 
 Contohnya meliputi:
 
+- atlas berbasis keputusan untuk 20 referensi style website dalam empat keluarga;
+- 12 pola loading hidup dengan semantik progress dan reduced motion;
 - landing page editorial pada viewport lebar dan sempit;
 - pustaka color system dengan 24 palet semantik dan referensi yang disediakan;
 - workspace operasional dengan filter antrean yang berfungsi;

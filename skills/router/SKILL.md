@@ -36,10 +36,12 @@ Choose only the context required for the current phase. This skill routes work. 
 
 | Task | Primary | Optional support |
 |---|---|---|
-| New visual website | design-direction | product-copy |
+| Website style or reference selection | style-atlas | design-direction |
+| New visual website after style selection | design-direction | product-copy |
 | Palette, theme, or brand-color system | color-systems | accessibility |
 | Existing UI color or contrast change | color-systems | accessibility |
 | Existing UI change | design-direction or interface-craft | accessibility |
+| Loading state, progress, or skeleton | loading-experience | accessibility |
 | Frontend implementation | interface-craft | responsive-mobile |
 | Generic or machine-like web output | clean-build-web | interface-craft |
 | Mobile defect | responsive-mobile | accessibility |
@@ -61,9 +63,14 @@ Choose only the context required for the current phase. This skill routes work. 
 ## Selection rules
 
 - Prefer a task-specific skill over a broad skill.
+- Prefer style-atlas when choosing among multiple style families or translating several references into one direction.
+- Prefer design-direction when the style family is already selected and the remaining work is one coherent visual thesis.
+- Do not load style-atlas for a small visual repair, palette-only change, or non-visual task.
 - Do not load design-direction for a small code repair with no visual decision.
 - Prefer color-systems over design-direction when palette roles, theme pairing, or contrast are the main decision.
 - Do not load color-systems for photo grading or when every color token is already fixed.
+- Prefer loading-experience when waiting, progress, skeleton, staged reveal, or loading recovery is the main decision.
+- Do not load loading-experience to disguise an unmeasured speed defect or for a synchronous state change.
 - Do not load browser-acceptance when the user asks for source review only.
 - Do not load release-delivery before the implementation is ready to ship.
 - Do not load product-copy for utility labels unless wording is part of the task.

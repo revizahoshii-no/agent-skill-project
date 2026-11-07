@@ -46,6 +46,10 @@ const jobs = [
   ['/docs/examples/editorial.html', 390, 844],
   ['/docs/examples/color-systems.html', 1365, 900],
   ['/docs/examples/color-systems.html', 390, 844],
+  ['/docs/examples/style-atlas.html', 1365, 900],
+  ['/docs/examples/style-atlas.html', 390, 844],
+  ['/docs/examples/loading-experience.html', 1365, 900],
+  ['/docs/examples/loading-experience.html', 390, 844],
   ['/docs/examples/workspace.html', 1365, 900],
   ['/docs/examples/workspace.html', 390, 844],
   ['/docs/examples/form.html', 1200, 850],
@@ -81,14 +85,22 @@ for (const [route, width, height] of jobs) {
     title: document.title.trim(),
     skills: [...document.querySelectorAll('article.skill')].map(article => article.querySelectorAll('img').length),
     paletteCards: document.querySelectorAll('.palette-card').length,
-    contrastRatios: [...document.querySelectorAll('.contrast-row b')].map(node => Number.parseFloat(node.textContent || '0'))
+    contrastRatios: [...document.querySelectorAll('.contrast-row b')].map(node => Number.parseFloat(node.textContent || '0')),
+    referenceCards: document.querySelectorAll('.reference-card').length,
+    atlasGroups: document.querySelectorAll('.atlas-group').length,
+    loaderCards: document.querySelectorAll('.loader-card').length,
+    progressBars: [...document.querySelectorAll('[role="progressbar"]')].map(node => ({
+      min: Number.parseFloat(node.getAttribute('aria-valuemin') || ''),
+      max: Number.parseFloat(node.getAttribute('aria-valuemax') || ''),
+      now: Number.parseFloat(node.getAttribute('aria-valuenow') || '')
+    }))
   }))
   if (!response || response.status() !== 200) failures.push(`${route} at ${width}px returned ${response?.status() || 'no response'}`)
   if (result.overflow > 0) failures.push(`${route} at ${width}px overflows by ${result.overflow}px`)
   if (result.brokenImages) failures.push(`${route} at ${width}px has ${result.brokenImages} broken images`)
   if (result.unnamedImages) failures.push(`${route} at ${width}px has ${result.unnamedImages} images without alt text`)
   if (!result.title) failures.push(`${route} at ${width}px has no document title`)
-  if (route === '/docs/' && (result.skills.length !== 19 || result.skills.some(count => count < 2))) {
+  if (route === '/docs/' && (result.skills.length !== 21 || result.skills.some(count => count < 2))) {
     failures.push(`${route} at ${width}px does not show two examples for each domain skill`)
   }
   if (route === '/docs/examples/color-systems.html' && result.paletteCards !== 24) {
@@ -96,6 +108,15 @@ for (const [route, width, height] of jobs) {
   }
   if (route === '/docs/examples/color-systems.html' && result.contrastRatios.some(ratio => ratio < 4.5)) {
     failures.push(`${route} at ${width}px includes a documented text pair below 4.5:1`)
+  }
+  if (route === '/docs/examples/style-atlas.html' && (result.referenceCards !== 20 || result.atlasGroups !== 4)) {
+    failures.push(`${route} at ${width}px does not show 20 references in four curated families`)
+  }
+  if (route === '/docs/examples/loading-experience.html' && result.loaderCards !== 12) {
+    failures.push(`${route} at ${width}px does not show all 12 loading patterns`)
+  }
+  if (route === '/docs/examples/loading-experience.html' && result.progressBars.some(bar => !Number.isFinite(bar.now) || bar.now < bar.min || bar.now > bar.max)) {
+    failures.push(`${route} at ${width}px has an invalid semantic progress value`)
   }
   for (const error of runtimeErrors) failures.push(`${route} at ${width}px runtime error: ${error}`)
   await page.close()
@@ -124,7 +145,29 @@ await interaction.getByRole('link', { name: /next frame/ }).click()
 await interaction.waitForURL(/frame=2/)
 if ((await interaction.locator('#motionWord').textContent())?.trim() !== 'Pause') failures.push('Motion frame route did not update the style frame')
 
+await interaction.goto(base + '/docs/examples/loading-experience.html', { waitUntil: 'networkidle' })
+await interaction.getByRole('button', { name: 'Pause motion' }).click()
+if (!(await interaction.locator('body').evaluate(node => node.classList.contains('is-paused')))) failures.push('Loading library did not pause its animated patterns')
+if ((await interaction.locator('#motionToggle').textContent())?.trim() !== 'Resume motion') failures.push('Loading library pause control did not update its label')
+await interaction.getByRole('button', { name: 'Replay' }).click()
+if ((await interaction.locator('#replayProgress').getAttribute('data-replayed')) !== 'true') failures.push('Loading library did not replay determinate progress')
+
 await interaction.close()
+
+const reducedContext = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' })
+const reducedPage = await reducedContext.newPage()
+await reducedPage.goto(base + '/docs/examples/loading-experience.html', { waitUntil: 'networkidle' })
+const reducedResult = await reducedPage.evaluate(() => ({
+  preference: matchMedia('(prefers-reduced-motion: reduce)').matches,
+  longAnimations: document.getAnimations().filter(animation => Number(animation.effect?.getTiming().duration || 0) > 1).length,
+  status: document.querySelector('#progressStatus')?.textContent?.trim() || '',
+  progress: document.querySelector('[role="progressbar"]')?.getAttribute('aria-valuenow') || ''
+}))
+if (!reducedResult.preference) failures.push('Loading library did not receive the reduced-motion preference')
+if (reducedResult.longAnimations) failures.push(`Loading library kept ${reducedResult.longAnimations} long animations under reduced motion`)
+if (!reducedResult.status || reducedResult.progress !== '72') failures.push('Loading library lost progress meaning under reduced motion')
+await reducedContext.close()
+
 await browser.close()
 await new Promise(resolve => server.close(resolve))
 
@@ -134,4 +177,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`Browser acceptance passed for ${jobs.length} viewport scenarios and 4 interaction paths`)
+console.log(`Browser acceptance passed for ${jobs.length} viewport scenarios, 5 interaction paths, and 1 reduced-motion path`)

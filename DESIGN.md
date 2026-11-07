@@ -4,7 +4,7 @@
 
 - Artifact: modular Agent Skills repository with a static documentation site and rendered website examples.
 - Audience: AI coding agents, developers, designers, and maintainers.
-- Visual language: Paper Simple editorial technical manual.
+- Visual language: Paper Simple editorial technical manual for the documentation shell; demo pages use the product-appropriate direction selected for the lesson.
 - Mode: greenfield.
 - Constraints: zero external runtime dependencies, offline-capable examples, responsive documentation, accessible controls, low context cost for agents.
 
@@ -26,7 +26,9 @@
 - Layout: indexed manual with strong rules and varied example compositions supports scanning without card-grid repetition.
 - Spacing: a 4, 8, 12, 16, 24, 32, 48, 72 scale balances dense reference content with readable pauses.
 - Components: rules, matrices, and examples replace decorative feature cards.
-- Imagery: screenshots come from real local demos; generated still-life assets appear only where imagery is part of the lesson.
+- Organization: each domain presents a decision template, reference or rule system, implementation direction, and browser-rendered evidence in that order.
+- Style range: the documentation shell stays consistent while example surfaces may use restrained luxury, organic editorial, character-led, nostalgic, illustrative, or neo-brutal directions when the product context supports them.
+- Imagery: screenshots come from real local demos; supplied references are organized as studies and generated still-life assets appear only where imagery is part of the lesson.
 - Motion: state feedback only, with reduced-motion support; documentation never depends on animation.
 
 ## Visual Tokens

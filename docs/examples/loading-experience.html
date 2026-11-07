@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Twelve lightweight, contextual loading patterns with progress, reduced-motion behavior, and accessible status guidance.">
+  <meta name="theme-color" content="#11110f">
+  <title>Loading Experience - Motion With Meaning</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #11110f;
+      --panel: #1b1b18;
+      --line: #3c3b35;
+      --paper: #f5f0e4;
+      --muted: #aaa69b;
+      --acid: #d8ff3e;
+      --coral: #ff6d52;
+      --blue: #65a7ff;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+      --mono: "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--night); color: var(--paper); font-family: var(--sans); scroll-behavior: smooth; }
+    body { margin: 0; min-width: 280px; overflow-x: hidden; }
+    button, a { color: inherit; }
+    button { font: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--acid); outline-offset: 4px; }
+    .skip-link { position: fixed; z-index: 50; top: 12px; left: 12px; transform: translateY(-160%); padding: 12px 16px; color: var(--night); background: var(--acid); font-weight: 800; }
+    .skip-link:focus { transform: none; }
+
+    .topbar {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px clamp(18px, 4vw, 58px);
+      background: rgba(17, 17, 15, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand { font: 700 14px/1 var(--mono); letter-spacing: .04em; text-decoration: none; }
+    .controls { display: flex; align-items: center; gap: 10px; }
+    .control {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      color: var(--paper);
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .control:hover { color: var(--night); background: var(--acid); border-color: var(--acid); }
+
+    .hero {
+      min-height: 670px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-copy { display: grid; align-content: end; padding: clamp(58px, 8vw, 110px) clamp(22px, 6vw, 90px); }
+    .eyebrow { margin: 0 0 22px; color: var(--acid); font: 700 11px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    h1 { max-width: 930px; margin: 0; font: 400 clamp(68px, 10vw, 150px)/.78 var(--serif); letter-spacing: -.075em; text-wrap: balance; }
+    .lede { max-width: 680px; margin: 38px 0 0; color: var(--muted); font-size: clamp(17px, 1.8vw, 23px); line-height: 1.55; }
+
+    .hero-study { display: grid; align-content: space-between; padding: clamp(34px, 5vw, 68px); color: var(--night); background: var(--coral); }
+    .hero-study strong { display: block; font: 400 clamp(92px, 12vw, 168px)/.72 var(--serif); letter-spacing: -.08em; }
+    .hero-study h2 { max-width: 320px; margin: 0 0 16px; font: 400 31px/1 var(--serif); }
+    .hero-study p { max-width: 360px; margin: 0; font-size: 14px; line-height: 1.6; }
+
+    .principles { padding: 74px clamp(20px, 6vw, 90px) 84px; background: var(--paper); color: var(--night); border-bottom: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .36fr); gap: 36px; align-items: end; margin-bottom: 42px; }
+    .section-head h2 { max-width: 900px; margin: 0; font: 400 clamp(48px, 7vw, 96px)/.88 var(--serif); letter-spacing: -.055em; }
+    .section-head p { margin: 0; color: #5f5b53; font-size: 14px; line-height: 1.65; }
+    .principle-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--night); }
+    .principle { min-height: 210px; padding: 20px; border-right: 1px solid var(--night); }
+    .principle:last-child { border-right: 0; }
+    .principle span { color: #c34833; font: 700 11px var(--mono); }
+    .principle h3 { margin: 38px 0 12px; font: 400 25px/1 var(--serif); }
+    .principle p { margin: 0; color: #635f57; font-size: 13px; line-height: 1.55; }
+
+    .library { padding: 78px clamp(20px, 5vw, 74px) 94px; }
+    .library-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 40px; }
+    .library-head h2 { max-width: 900px; margin: 0; font: 400 clamp(50px, 7vw, 96px)/.88 var(--serif); letter-spacing: -.055em; }
+    .library-head p { max-width: 360px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .loader-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .loader-card { min-width: 0; grid-column: span 4; min-height: 390px; display: grid; grid-template-rows: auto minmax(190px, 1fr) auto; padding: 20px; background: var(--panel); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .loader-card:nth-child(1), .loader-card:nth-child(6), .loader-card:nth-child(11) { grid-column: span 8; }
+    .loader-meta { display: flex; justify-content: space-between; gap: 14px; color: var(--muted); font: 10px/1.4 var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+    .loader-stage { min-width: 0; display: grid; place-items: center; padding: 24px 0; overflow: hidden; }
+    .loader-copy { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: end; padding-top: 17px; border-top: 1px solid var(--line); }
+    .loader-copy h3 { margin: 0 0 7px; font: 400 25px/1 var(--serif); }
+    .loader-copy p { max-width: 420px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .duration { color: var(--acid); font: 700 10px/1.3 var(--mono); white-space: nowrap; }
+
+    .orbital { position: relative; width: 108px; aspect-ratio: 1; border: 2px solid #41413d; border-radius: 50%; }
+    .orbital::before { content: ""; position: absolute; inset: -2px; border: 2px solid transparent; border-top-color: var(--acid); border-right-color: var(--acid); border-radius: inherit; animation: spin 1.05s cubic-bezier(.65,.05,.35,1) infinite; }
+    .orbital::after { content: ""; position: absolute; width: 12px; aspect-ratio: 1; top: -7px; left: 50%; margin-left: -6px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 24px rgba(216,255,62,.45); }
+
+    .dot-sequence { display: flex; align-items: center; gap: 10px; }
+    .dot-sequence i { width: 16px; aspect-ratio: 1; border-radius: 50%; background: var(--paper); animation: dotWave 1.05s ease-in-out infinite; }
+    .dot-sequence i:nth-child(2) { animation-delay: .14s; }
+    .dot-sequence i:nth-child(3) { animation-delay: .28s; }
+    .dot-sequence i:nth-child(4) { animation-delay: .42s; }
+
+    .pulse-mark { position: relative; width: 112px; aspect-ratio: 1; }
+    .pulse-mark i { position: absolute; inset: 0; border: 1px solid var(--blue); border-radius: 50%; animation: pulseRing 1.8s ease-out infinite; }
+    .pulse-mark i:nth-child(2) { animation-delay: .6s; }
+    .pulse-mark i:nth-child(3) { animation-delay: 1.2s; }
+    .pulse-mark::after { content: ""; position: absolute; width: 18px; aspect-ratio: 1; inset: calc(50% - 9px); border-radius: 50%; background: var(--blue); }
+
+    .bead-track { position: relative; width: min(260px, 82%); height: 34px; border-bottom: 2px solid #4c4c46; }
+    .bead-track i { position: absolute; bottom: -7px; left: 0; width: calc(100% - 12px); height: 12px; animation: beadTravel 1.6s cubic-bezier(.72,0,.28,1) infinite alternate; }
+    .bead-track i::before { content: ""; display: block; width: 12px; aspect-ratio: 1; border-radius: 50%; background: var(--coral); }
+    .bead-track span { position: absolute; top: 0; color: var(--muted); font: 10px var(--mono); }
+    .bead-track span:last-child { right: 0; }
+
+    .time-face { position: relative; width: 110px; aspect-ratio: 1; border: 2px solid var(--paper); border-radius: 50%; }
+    .time-face::before { content: ""; position: absolute; width: 2px; height: 38px; left: 53px; top: 15px; transform-origin: 50% 38px; background: var(--acid); animation: spin 1.7s linear infinite; }
+    .time-face::after { content: ""; position: absolute; width: 10px; aspect-ratio: 1; inset: calc(50% - 5px); border-radius: 50%; background: var(--paper); }
+
+    .signal { height: 94px; display: flex; align-items: end; gap: 8px; }
+    .signal i { width: 15px; height: 24px; background: var(--blue); border-radius: 3px 3px 0 0; transform-origin: bottom; animation: signalGrow 1.2s ease-in-out infinite alternate; }
+    .signal i:nth-child(2) { height: 42px; animation-delay: .12s; }
+    .signal i:nth-child(3) { height: 62px; animation-delay: .24s; }
+    .signal i:nth-child(4) { height: 86px; animation-delay: .36s; }
+
+    .route-loader { width: min(330px, 92%); display: grid; grid-template-columns: 40px 1fr 40px; gap: 12px; align-items: center; }
+    .route-node { width: 40px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--paper); font: 700 12px var(--mono); }
+    .route-line { position: relative; height: 2px; background: #484842; }
+    .route-line::after { content: ""; position: absolute; width: 28px; height: 8px; top: -3px; left: 0; border-radius: 999px; background: var(--acid); animation: routeTravel 1.55s cubic-bezier(.65,.05,.35,1) infinite; }
+
+    .book-loader { position: relative; width: 120px; height: 84px; perspective: 500px; }
+    .book-loader::before, .book-loader::after { content: ""; position: absolute; top: 8px; width: 58px; height: 70px; border: 2px solid var(--paper); background: var(--panel); }
+    .book-loader::before { right: 60px; border-radius: 8px 0 0 8px; }
+    .book-loader::after { left: 60px; border-radius: 0 8px 8px 0; }
+    .book-page { position: absolute; z-index: 2; top: 10px; left: 60px; width: 56px; height: 66px; transform-origin: left center; border: 1px solid var(--paper); background: var(--blue); animation: pageTurn 1.65s ease-in-out infinite; }
+
+    .word-loader { display: flex; gap: 3px; font: 400 clamp(42px, 7vw, 82px)/1 var(--serif); letter-spacing: -.05em; }
+    .word-loader span { display: inline-block; color: #55544e; animation: letterWake 1.8s ease-in-out infinite; }
+    .word-loader span:nth-child(2) { animation-delay: .1s; }
+    .word-loader span:nth-child(3) { animation-delay: .2s; }
+    .word-loader span:nth-child(4) { animation-delay: .3s; }
+    .word-loader span:nth-child(5) { animation-delay: .4s; }
+    .word-loader span:nth-child(6) { animation-delay: .5s; }
+    .word-loader span:nth-child(7) { animation-delay: .6s; }
+
+    .progress-demo { width: min(360px, 90%); }
+    .progress-label { display: flex; justify-content: space-between; margin-bottom: 12px; font: 11px var(--mono); }
+    .progress-track { height: 9px; overflow: hidden; background: #42423c; border-radius: 999px; }
+    .progress-fill { width: 72%; height: 100%; transform-origin: left; background: var(--acid); border-radius: inherit; animation: progressBuild 2.4s cubic-bezier(.45,0,.2,1) both; }
+    .progress-demo.is-replaying .progress-fill { animation: none; }
+
+    .tile-loader { width: min(330px, 94%); display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; transform: rotate(-3deg); }
+    .tile-loader i { aspect-ratio: .72; border: 1px solid #4f4e47; background: #242420; animation: tileLift 1.5s ease-in-out infinite; }
+    .tile-loader i:nth-child(2) { animation-delay: .12s; }
+    .tile-loader i:nth-child(3) { animation-delay: .24s; }
+    .tile-loader i:nth-child(4) { animation-delay: .36s; }
+    .tile-loader i:nth-child(5) { animation-delay: .48s; }
+
+    .skeleton { width: min(390px, 94%); display: grid; grid-template-columns: 96px 1fr; gap: 18px; }
+    .skeleton-visual, .skeleton-line { position: relative; overflow: hidden; background: #33332e; }
+    .skeleton-visual::after, .skeleton-line::after { content: ""; position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(90deg, transparent, rgba(245,240,228,.16), transparent); animation: shimmer 1.6s ease-in-out infinite; }
+    .skeleton-visual { aspect-ratio: .8; }
+    .skeleton-copy { display: grid; align-content: center; gap: 10px; }
+    .skeleton-line { height: 10px; }
+    .skeleton-line:nth-child(1) { width: 88%; }
+    .skeleton-line:nth-child(2) { width: 100%; }
+    .skeleton-line:nth-child(3) { width: 64%; }
+    .skeleton-line:nth-child(2)::after { animation-delay: .12s; }
+    .skeleton-line:nth-child(3)::after { animation-delay: .24s; }
+
+    .decision { display: grid; grid-template-columns: minmax(0, .68fr) minmax(0, 1.32fr); background: var(--paper); color: var(--night); }
+    .decision-intro { padding: 78px clamp(22px, 5.5vw, 80px); border-right: 1px solid var(--night); }
+    .decision-intro h2 { margin: 0; font: 400 clamp(50px, 7vw, 96px)/.88 var(--serif); letter-spacing: -.055em; }
+    .decision-intro p { max-width: 500px; margin: 28px 0 0; color: #5c5850; font-size: 15px; line-height: 1.65; }
+    .decision-list { padding: 78px clamp(22px, 5.5vw, 80px); }
+    .decision-row { display: grid; grid-template-columns: 42px minmax(0, 1fr) minmax(140px, .55fr); gap: 18px; padding: 20px 0; border-bottom: 1px solid #bcb6aa; }
+    .decision-row:first-child { border-top: 1px solid #bcb6aa; }
+    .decision-row span { color: #c34833; font: 700 11px var(--mono); }
+    .decision-row strong { font: 400 22px var(--serif); }
+    .decision-row p { margin: 0; color: #676159; font-size: 12px; line-height: 1.5; }
+
+    footer { display: flex; justify-content: space-between; gap: 24px; padding: 30px clamp(20px, 5vw, 74px); color: var(--muted); border-top: 1px solid var(--line); font: 11px/1.5 var(--mono); }
+    footer p { max-width: 680px; margin: 0; }
+    footer a { color: var(--acid); }
+
+    .is-paused *, .is-paused *::before, .is-paused *::after { animation-play-state: paused !important; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes dotWave { 0%, 100% { transform: translateY(0) scale(.7); opacity: .35; } 45% { transform: translateY(-13px) scale(1); opacity: 1; } }
+    @keyframes pulseRing { 0% { transform: scale(.16); opacity: 0; } 28% { opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
+    @keyframes beadTravel { 0% { transform: translateX(0); opacity: .6; } 55% { opacity: 1; } 100% { transform: translateX(100%); opacity: .6; } }
+    @keyframes signalGrow { 0% { transform: scaleY(.25); opacity: .35; } 100% { transform: scaleY(1); opacity: 1; } }
+    @keyframes routeTravel { 0% { transform: translateX(0); opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(calc(100% + 130px)); opacity: 0; } }
+    @keyframes pageTurn { 0%, 15% { transform: rotateY(0); background: var(--blue); } 80%, 100% { transform: rotateY(-178deg); background: var(--coral); } }
+    @keyframes letterWake { 0%, 75%, 100% { color: #55544e; transform: translateY(0); } 25% { color: var(--paper); transform: translateY(-8px); } 45% { color: var(--acid); } }
+    @keyframes progressBuild { from { transform: scaleX(.04); } to { transform: scaleX(1); } }
+    @keyframes tileLift { 0%, 100% { transform: translateY(0); background: #242420; } 45% { transform: translateY(-18px); background: var(--coral); border-color: var(--coral); } }
+    @keyframes shimmer { to { transform: translateX(120%); } }
+
+    @media (max-width: 980px) {
+      .hero, .decision { grid-template-columns: 1fr; }
+      .hero-study { min-height: 360px; grid-template-columns: minmax(0, .5fr) minmax(0, 1fr); align-items: end; gap: 24px; }
+      .section-head { grid-template-columns: 1fr; }
+      .principle-grid { grid-template-columns: repeat(2, 1fr); }
+      .principle:nth-child(2) { border-right: 0; }
+      .principle:nth-child(-n+2) { border-bottom: 1px solid var(--night); }
+      .loader-card, .loader-card:nth-child(1), .loader-card:nth-child(6), .loader-card:nth-child(11) { grid-column: span 6; }
+      .decision-intro { border-right: 0; border-bottom: 1px solid var(--night); }
+    }
+
+    @media (max-width: 640px) {
+      .topbar { position: static; align-items: flex-start; }
+      .brand { max-width: 170px; line-height: 1.35; }
+      .control { min-height: 42px; padding: 0 12px; }
+      .hero { min-height: auto; }
+      .hero-copy { min-height: 560px; }
+      h1 { font-size: clamp(62px, 20vw, 88px); }
+      .hero-study { grid-template-columns: 1fr; }
+      .principle-grid { grid-template-columns: 1fr; }
+      .principle, .principle:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--night); }
+      .principle:last-child { border-bottom: 0; }
+      .library-head { align-items: start; flex-direction: column; }
+      .loader-grid { grid-template-columns: 1fr; }
+      .loader-card, .loader-card:nth-child(1), .loader-card:nth-child(6), .loader-card:nth-child(11) { grid-column: auto; min-height: 370px; }
+      .loader-copy { grid-template-columns: 1fr; }
+      .duration { white-space: normal; }
+      .decision-row { grid-template-columns: 32px minmax(0, 1fr); }
+      .decision-row p { grid-column: 2; }
+      footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+      .orbital::before { transform: rotate(80deg); }
+      .progress-fill { transform: scaleX(1); }
+      .word-loader span { color: var(--paper); }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to loader library</a>
+  <header class="topbar">
+    <a class="brand" href="../index.html">AGENT SKILL PROJECT / LOADING EXPERIENCE</a>
+    <div class="controls">
+      <button class="control" id="motionToggle" type="button" aria-pressed="false">Pause motion</button>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Responsive feedback patterns</p>
+        <h1 id="hero-title">Waiting, designed.</h1>
+        <p class="lede">Loading feedback should describe what is happening, preserve context, and feel native to the product. Motion is a supporting signal, never a reason to delay useful content.</p>
+      </div>
+      <aside class="hero-study" aria-label="Reference study summary">
+        <strong>7</strong>
+        <div><h2>Motion families observed</h2><p>The supplied study organizes rings, dots, fading circles, bouncing balls, time, signal strength, and task icons. This library turns those visual categories into product decisions.</p></div>
+      </aside>
+    </section>
+
+    <section class="principles" aria-labelledby="principles-title">
+      <div class="section-head">
+        <h2 id="principles-title">Earn every loading state.</h2>
+        <p>Choose feedback from task duration and certainty, not from a desire to decorate empty time.</p>
+      </div>
+      <div class="principle-grid">
+        <article class="principle"><span>UNDER 100 MS</span><h3>Show nothing</h3><p>Immediate updates do not need a flash of progress UI.</p></article>
+        <article class="principle"><span>100 MS - 1 S</span><h3>Local signal</h3><p>Keep the page stable and acknowledge the exact control or region.</p></article>
+        <article class="principle"><span>1 S - 10 S</span><h3>Explain progress</h3><p>Use skeletons, stages, or a measured bar when work is visible.</p></article>
+        <article class="principle"><span>OVER 10 S</span><h3>Set expectations</h3><p>Name the stage, allow recovery, and never trap the visitor in an infinite loop.</p></article>
+      </div>
+    </section>
+
+    <section class="library" aria-labelledby="library-title">
+      <header class="library-head">
+        <h2 id="library-title">Twelve live patterns.</h2>
+        <p>Each example has a narrow purpose. The visual signature can change, but status, timing, performance, and reduced motion remain part of the contract.</p>
+      </header>
+
+      <div class="loader-grid">
+        <article class="loader-card">
+          <div class="loader-meta"><span>Micro indicator</span><span>Indeterminate</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="orbital"></div></div>
+          <div class="loader-copy"><div><h3>Orbital focus</h3><p>For a local media or product preview where a restrained circular gesture belongs to the visual language.</p></div><span class="duration">0.3 - 2 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Micro indicator</span><span>Indeterminate</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="dot-sequence"><i></i><i></i><i></i><i></i></div></div>
+          <div class="loader-copy"><div><h3>Conversational dots</h3><p>For composing, searching, or assistant activity when an exact percentage is unavailable.</p></div><span class="duration">0.5 - 3 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Connection</span><span>Indeterminate</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="pulse-mark"><i></i><i></i><i></i></div></div>
+          <div class="loader-copy"><div><h3>Discovery pulse</h3><p>For nearby-device, location, or network discovery with a static reduced-motion fallback.</p></div><span class="duration">1 - 5 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Transfer</span><span>Indeterminate</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="bead-track"><i></i><span>LOCAL</span><span>CLOUD</span></div></div>
+          <div class="loader-copy"><div><h3>Traveling bead</h3><p>For short transfers where direction matters but byte-level progress is not available.</p></div><span class="duration">1 - 4 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Time</span><span>Indeterminate</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="time-face"></div></div>
+          <div class="loader-copy"><div><h3>Measured wait</h3><p>For scheduled refreshes and known polling windows, paired with visible status text.</p></div><span class="duration">2 - 10 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Connection</span><span>Stateful</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="signal"><i></i><i></i><i></i><i></i></div></div>
+          <div class="loader-copy"><div><h3>Signal ladder</h3><p>For reconnecting hardware or media. Use real state changes when signal data exists; animate only while negotiating.</p></div><span class="duration">1 - 8 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Task icon</span><span>Staged</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="route-loader"><span class="route-node">A</span><i class="route-line"></i><span class="route-node">B</span></div></div>
+          <div class="loader-copy"><div><h3>Route handoff</h3><p>For export, fulfillment, or delivery tasks where showing source and destination adds meaning.</p></div><span class="duration">2 - 10 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Task icon</span><span>Indeterminate</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="book-loader"><i class="book-page"></i></div></div>
+          <div class="loader-copy"><div><h3>Indexing pages</h3><p>For document parsing or reading preparation. Pair it with the current file name and stage.</p></div><span class="duration">1 - 10 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Brand reveal</span><span>Entry only</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="word-loader"><span>F</span><span>I</span><span>E</span><span>L</span><span>D</span><span>E</span><span>D</span></div></div>
+          <div class="loader-copy"><div><h3>Wordmark wake</h3><p>Use only when application startup is genuinely blocking. Never hold ready content to complete the reveal.</p></div><span class="duration">MAX 1.5 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Progress</span><span>Determinate</span></div>
+          <div class="loader-stage"><div class="progress-demo" id="progressDemo"><div class="progress-label"><span id="progressStatus">Preparing archive</span><span>72%</span></div><div class="progress-track" role="progressbar" aria-labelledby="progressStatus" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72"><div class="progress-fill"></div></div></div></div>
+          <div class="loader-copy"><div><h3>Measured line</h3><p>For export and upload work with real progress. The number must reflect actual completion, not a decorative timer.</p></div><button class="control" id="replayProgress" type="button">Replay</button></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Collection</span><span>Staged</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="tile-loader"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="loader-copy"><div><h3>Editorial tiles</h3><p>For collection assembly when individual results can arrive in stages. Replace each tile as content resolves.</p></div><span class="duration">1 - 6 S</span></div>
+        </article>
+
+        <article class="loader-card">
+          <div class="loader-meta"><span>Content placeholder</span><span>Progressive</span></div>
+          <div class="loader-stage" aria-hidden="true"><div class="skeleton"><div class="skeleton-visual"></div><div class="skeleton-copy"><i class="skeleton-line"></i><i class="skeleton-line"></i><i class="skeleton-line"></i></div></div></div>
+          <div class="loader-copy"><div><h3>Structural skeleton</h3><p>For content whose final geometry is known. Preserve layout and avoid shimmering areas that do not map to real content.</p></div><span class="duration">0.5 - 4 S</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="decision" aria-labelledby="decision-title">
+      <div class="decision-intro">
+        <p class="eyebrow">Decision template</p>
+        <h2 id="decision-title">Specify the wait before drawing it.</h2>
+        <p>A loading component is complete only when task scope, progress truth, status copy, timeout, error recovery, and reduced-motion behavior are documented.</p>
+      </div>
+      <div class="decision-list">
+        <div class="decision-row"><span>01</span><strong>Scope</strong><p>Page, region, control, or background task.</p></div>
+        <div class="decision-row"><span>02</span><strong>Duration band</strong><p>Expected and maximum wait, measured where possible.</p></div>
+        <div class="decision-row"><span>03</span><strong>Progress truth</strong><p>None, staged, or determinate from real work.</p></div>
+        <div class="decision-row"><span>04</span><strong>Status language</strong><p>Specific action, current stage, and user consequence.</p></div>
+        <div class="decision-row"><span>05</span><strong>Recovery</strong><p>Timeout, retry, cancel, and preserved input.</p></div>
+        <div class="decision-row"><span>06</span><strong>Motion budget</strong><p>Transform and opacity, reduced state, no forced delay.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>All animations use CSS transforms or opacity. Status and progress remain available without motion, and the pause control is provided for this demonstration library.</p>
+    <a href="../index.html#loading-experience">Return to documentation</a>
+  </footer>
+
+  <script>
+    const body = document.body
+    const motionToggle = document.querySelector('#motionToggle')
+    const progressDemo = document.querySelector('#progressDemo')
+    const replayProgress = document.querySelector('#replayProgress')
+
+    motionToggle.addEventListener('click', () => {
+      const paused = body.classList.toggle('is-paused')
+      motionToggle.setAttribute('aria-pressed', String(paused))
+      motionToggle.textContent = paused ? 'Resume motion' : 'Pause motion'
+    })
+
+    replayProgress.addEventListener('click', () => {
+      progressDemo.classList.add('is-replaying')
+      requestAnimationFrame(() => requestAnimationFrame(() => progressDemo.classList.remove('is-replaying')))
+      replayProgress.dataset.replayed = 'true'
+    })
+  </script>
+</body>
+</html>
