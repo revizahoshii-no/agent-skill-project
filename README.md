@@ -80,6 +80,7 @@ The router contains no domain workflow. Domain skills cannot open other domain s
 | Skill | Route when | Human guide |
 | --- | --- | --- |
 | Design direction | The visual thesis or composition is unresolved | [Guide](docs/guides/design-direction.md) |
+| Color systems | Selecting palette roles, deriving colors from references, pairing themes, or repairing contrast | [Guide](docs/guides/color-systems.md) |
 | Interface craft | Building forms, navigation, dashboards, controls, or task flows | [Guide](docs/guides/interface-craft.md) |
 | Responsive mobile | Reflow, touch, overflow, or narrow-screen behavior matters | [Guide](docs/guides/responsive-mobile.md) |
 | Accessibility | Reviewing semantics, keyboard behavior, focus, errors, contrast, or motion | [Guide](docs/guides/accessibility.md) |

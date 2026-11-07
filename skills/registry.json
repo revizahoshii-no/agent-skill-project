@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "loadPolicy": {
     "maxPrimarySkills": 2,
     "maxSupportingSkills": 1,
@@ -35,6 +35,23 @@
       "excludes": [
         "backend-only task",
         "copy-only point edit"
+      ]
+    },
+    {
+      "name": "color-systems",
+      "path": "skills/color-systems/SKILL.md",
+      "phase": "planning-and-review",
+      "triggers": [
+        "color palette",
+        "color system",
+        "brand colors",
+        "theme colors",
+        "dark mode",
+        "color contrast"
+      ],
+      "excludes": [
+        "photo color grading",
+        "non-visual backend task"
       ]
     },
     {

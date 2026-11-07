@@ -44,6 +44,8 @@ const jobs = [
   ['/docs/', 390, 844],
   ['/docs/examples/editorial.html', 1365, 900],
   ['/docs/examples/editorial.html', 390, 844],
+  ['/docs/examples/color-systems.html', 1365, 900],
+  ['/docs/examples/color-systems.html', 390, 844],
   ['/docs/examples/workspace.html', 1365, 900],
   ['/docs/examples/workspace.html', 390, 844],
   ['/docs/examples/form.html', 1200, 850],
@@ -77,15 +79,23 @@ for (const [route, width, height] of jobs) {
     brokenImages: [...document.images].filter(image => image.naturalWidth === 0).length,
     unnamedImages: [...document.images].filter(image => !image.alt.trim()).length,
     title: document.title.trim(),
-    skills: [...document.querySelectorAll('article.skill')].map(article => article.querySelectorAll('img').length)
+    skills: [...document.querySelectorAll('article.skill')].map(article => article.querySelectorAll('img').length),
+    paletteCards: document.querySelectorAll('.palette-card').length,
+    contrastRatios: [...document.querySelectorAll('.contrast-row b')].map(node => Number.parseFloat(node.textContent || '0'))
   }))
   if (!response || response.status() !== 200) failures.push(`${route} at ${width}px returned ${response?.status() || 'no response'}`)
   if (result.overflow > 0) failures.push(`${route} at ${width}px overflows by ${result.overflow}px`)
   if (result.brokenImages) failures.push(`${route} at ${width}px has ${result.brokenImages} broken images`)
   if (result.unnamedImages) failures.push(`${route} at ${width}px has ${result.unnamedImages} images without alt text`)
   if (!result.title) failures.push(`${route} at ${width}px has no document title`)
-  if (route === '/docs/' && (result.skills.length !== 18 || result.skills.some(count => count < 2))) {
+  if (route === '/docs/' && (result.skills.length !== 19 || result.skills.some(count => count < 2))) {
     failures.push(`${route} at ${width}px does not show two examples for each domain skill`)
+  }
+  if (route === '/docs/examples/color-systems.html' && result.paletteCards !== 24) {
+    failures.push(`${route} at ${width}px does not show all 24 palette systems`)
+  }
+  if (route === '/docs/examples/color-systems.html' && result.contrastRatios.some(ratio => ratio < 4.5)) {
+    failures.push(`${route} at ${width}px includes a documented text pair below 4.5:1`)
   }
   for (const error of runtimeErrors) failures.push(`${route} at ${width}px runtime error: ${error}`)
   await page.close()

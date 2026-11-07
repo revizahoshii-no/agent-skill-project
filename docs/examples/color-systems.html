@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A browser-rendered library of semantic color systems with 24 palette examples, role tokens, contrast readings, and UI previews.">
+  <meta name="theme-color" content="#161719">
+  <title>Color Systems Field Guide</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f0e8;
+      --surface: #fffdf8;
+      --ink: #171719;
+      --muted: #5d5a55;
+      --rule: #c9c1b5;
+      --blue: #1746a2;
+      --coral: #c94c3f;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+      --mono: "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 280px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+
+    body {
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 4px;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .masthead {
+      min-height: 540px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(270px, .7fr);
+      gap: clamp(32px, 7vw, 110px);
+      align-items: end;
+      padding: 40px clamp(22px, 7vw, 100px) 64px;
+      color: #f6f0e6;
+      background:
+        radial-gradient(circle at 85% 10%, rgba(123, 197, 201, .28), transparent 24%),
+        radial-gradient(circle at 16% 88%, rgba(201, 76, 63, .24), transparent 28%),
+        #111a24;
+    }
+
+    .back {
+      align-self: start;
+      justify-self: start;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, .5);
+      color: #f6f0e6;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .hero-copy {
+      grid-column: 1;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: #e7a67e;
+      font: 700 12px/1.3 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font: 700 clamp(62px, 10vw, 150px)/.82 var(--serif);
+      letter-spacing: -.065em;
+      text-wrap: balance;
+    }
+
+    .lede {
+      max-width: 690px;
+      margin: 32px 0 0;
+      color: #c5cbd2;
+      font-size: clamp(17px, 2vw, 23px);
+      line-height: 1.5;
+    }
+
+    .hero-note {
+      grid-column: 2;
+      align-self: end;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, .25);
+      background: rgba(255, 255, 255, .05);
+    }
+
+    .hero-note strong {
+      display: block;
+      color: #f3e7cf;
+      font: 700 46px/1 var(--serif);
+    }
+
+    .hero-note span {
+      display: block;
+      margin-top: 12px;
+      color: #aeb8c6;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1500px, 100%);
+      margin-inline: auto;
+    }
+
+    section {
+      padding: 72px clamp(20px, 6vw, 90px);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 42px;
+    }
+
+    .index {
+      color: var(--coral);
+      font: 700 12px var(--mono);
+      letter-spacing: .08em;
+    }
+
+    h2 {
+      max-width: 930px;
+      margin: 0;
+      font: 700 clamp(42px, 6vw, 78px)/.94 var(--serif);
+      letter-spacing: -.05em;
+      text-wrap: balance;
+    }
+
+    .section-copy {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      gap: 1px;
+    }
+
+    .method-grid article {
+      min-height: 210px;
+      padding: 24px;
+      background: var(--surface);
+    }
+
+    .method-grid b {
+      color: var(--coral);
+      font: 700 12px var(--mono);
+    }
+
+    .method-grid h3 {
+      margin: 34px 0 10px;
+      font: 700 26px/1 var(--serif);
+    }
+
+    .method-grid p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -16px 0 30px 134px;
+    }
+
+    .legend span {
+      padding: 7px 10px;
+      border: 1px solid var(--rule);
+      font: 700 10px var(--mono);
+      text-transform: uppercase;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .palette-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--ink);
+      background: var(--surface);
+    }
+
+    .palette-preview {
+      min-height: 238px;
+      padding: 24px;
+      color: var(--card-ink);
+      background: var(--card-canvas);
+    }
+
+    .palette-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--card-muted);
+      font: 700 10px var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .component {
+      margin-top: 25px;
+      padding: 22px;
+      border: 1px solid color-mix(in srgb, var(--card-ink) 24%, transparent);
+      background: var(--card-surface);
+    }
+
+    .component h3 {
+      margin: 0;
+      color: var(--card-ink);
+      font: 700 27px/1.05 var(--serif);
+      letter-spacing: -.02em;
+    }
+
+    .component p {
+      margin: 10px 0 17px;
+      color: var(--card-muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .component-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sample-button {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 14px;
+      color: var(--button-ink);
+      background: var(--card-brand);
+      font-size: 12px;
+      font-weight: 800;
+      border: 0;
+    }
+
+    .sample-link {
+      color: var(--link-color);
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+
+    .accent-rule {
+      width: 100%;
+      height: 5px;
+      margin-top: 20px;
+      background: var(--card-accent);
+    }
+
+    .palette-body {
+      padding: 20px 22px 22px;
+    }
+
+    .palette-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+    }
+
+    .palette-title h3 {
+      margin: 0;
+      font: 700 25px/1.1 var(--serif);
+    }
+
+    .palette-title span {
+      color: var(--muted);
+      font: 700 10px var(--mono);
+      text-transform: uppercase;
+    }
+
+    .palette-use {
+      min-height: 42px;
+      margin: 11px 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      border: 1px solid #d7d1c7;
+    }
+
+    .swatch {
+      min-width: 0;
+    }
+
+    .swatch-color {
+      height: 44px;
+      background: var(--swatch);
+    }
+
+    .swatch-label {
+      padding: 8px 3px;
+      overflow: hidden;
+      color: #4c4945;
+      background: #fffdf8;
+      font: 8px/1.25 var(--mono);
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .contrast-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .contrast-row span {
+      padding: 9px 10px;
+      color: #4d4b47;
+      background: #f3efe7;
+      font: 10px/1.35 var(--mono);
+    }
+
+    .reference-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .reference-grid figure {
+      margin: 0;
+      padding: 10px;
+      border: 1px solid var(--rule);
+      background: var(--surface);
+    }
+
+    .reference-grid img {
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: top;
+      background: #ddd5c8;
+    }
+
+    .reference-grid figcaption {
+      padding: 12px 4px 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    footer {
+      padding: 32px clamp(20px, 6vw, 90px) 52px;
+      color: #d7d3ca;
+      background: var(--ink);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1040px) {
+      .palette-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .method-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .reference-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .masthead {
+        min-height: 0;
+        grid-template-columns: 1fr;
+        gap: 44px;
+        padding: 24px 20px 48px;
+      }
+
+      .hero-copy,
+      .hero-note {
+        grid-column: 1;
+      }
+
+      h1 {
+        font-size: clamp(62px, 22vw, 94px);
+      }
+
+      .hero-note {
+        padding: 18px;
+      }
+
+      section {
+        padding: 54px 16px;
+      }
+
+      .section-head {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 30px;
+      }
+
+      .legend {
+        margin: -6px 0 24px;
+      }
+
+      .palette-grid,
+      .method-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .method-grid article {
+        min-height: 0;
+      }
+
+      .palette-preview {
+        min-height: 220px;
+        padding: 18px;
+      }
+
+      .component {
+        padding: 18px;
+      }
+
+      .swatch-label {
+        font-size: 7px;
+      }
+
+      .reference-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      footer {
+        padding-inline: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <a class="back" href="../index.html#color-systems">Back to skill documentation</a>
+    <div class="hero-copy">
+      <p class="eyebrow">Color systems field guide</p>
+      <h1>Give every color a job.</h1>
+      <p class="lede">Twenty-four semantic palettes built for real interfaces. Each one maps atmosphere to canvas, surface, text, brand, and accent roles, then checks the pairs that carry content.</p>
+    </div>
+    <aside class="hero-note" aria-label="Library summary">
+      <strong>24</strong>
+      <span>ready-to-adapt systems across editorial, technical, cinematic, playful, health, commerce, and operational products.</span>
+    </aside>
+  </header>
+
+  <main>
+    <section aria-labelledby="method-title">
+      <div class="section-head">
+        <span class="index">01 / METHOD</span>
+        <div>
+          <h2 id="method-title">Swatches become useful after roles are assigned.</h2>
+          <p class="section-copy">A palette is successful when hierarchy, state, and readability survive the move from a mood board into components.</p>
+        </div>
+      </div>
+      <div class="method-grid">
+        <article><b>01</b><h3>Read context</h3><p>Start with audience, posture, density, environment, and brand constraints.</p></article>
+        <article><b>02</b><h3>Extract relationships</h3><p>Find field, support, anchor, relief, and signal instead of copying every sampled pixel.</p></article>
+        <article><b>03</b><h3>Assign roles</h3><p>Map the relationship to canvas, surface, ink, muted, brand, accent, focus, and states.</p></article>
+        <article><b>04</b><h3>Measure pairs</h3><p>Check rendered foreground and background combinations, not the swatch row alone.</p></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="library-title">
+      <div class="section-head">
+        <span class="index">02 / LIBRARY</span>
+        <div>
+          <h2 id="library-title">Starting systems for different product postures.</h2>
+          <p class="section-copy">The same attractive color can communicate care, risk, authority, or spectacle depending on its field, proportion, and neighboring tones.</p>
+        </div>
+      </div>
+      <div class="legend" aria-label="Token legend">
+        <span>Canvas</span><span>Surface</span><span>Ink</span><span>Muted</span><span>Brand</span><span>Accent</span>
+      </div>
+      <div class="palette-grid" id="paletteGrid"></div>
+    </section>
+
+    <section aria-labelledby="references-title">
+      <div class="section-head">
+        <span class="index">03 / REFERENCES</span>
+        <div>
+          <h2 id="references-title">Five references, five reusable relationships.</h2>
+          <p class="section-copy">These supplied images informed the warm gradient, layered neutral, dark cool, balanced natural, and multi-family luxury patterns in the library.</p>
+        </div>
+      </div>
+      <div class="reference-grid">
+        <figure><img src="assets/color-reference-burgundy-peach.jpg" alt="Burgundy and peach vertical gradient color reference" width="735" height="1039"><figcaption>Warm gradient: deep anchor with soft relief.</figcaption></figure>
+        <figure><img src="assets/color-reference-cocoa-linen.jpg" alt="Layered cocoa, taupe, stone, and linen palette reference" width="736" height="920"><figcaption>Layered neutral: depth through lightness.</figcaption></figure>
+        <figure><img src="assets/color-reference-luxury-matrix.jpg" alt="Matrix of twelve luxury color combinations" width="736" height="736"><figcaption>Luxury matrix: one posture across many hue families.</figcaption></figure>
+        <figure><img src="assets/color-reference-deep-teal-fog.jpg" alt="Layered deep teal, blue-gray, fog, and slate palette reference" width="735" height="985"><figcaption>Cool dark: cinematic anchor with fog relief.</figcaption></figure>
+        <figure><img src="assets/color-reference-navy-sage.jpg" alt="Layered navy, slate blue, sage, sand, and ivory palette reference" width="736" height="981"><figcaption>Balanced natural: authority softened by sage and sand.</figcaption></figure>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Color values are starting points, not blanket accessibility approval. Verify the exact rendered pairs, text sizes, states, and adjacent colors used by the product.
+  </footer>
+
+  <script>
+    const palettes = [
+      { name: 'Paper Cobalt', family: 'Editorial', use: 'Documentation, portfolios, editorial products', colors: ['#F4F0E8', '#FFFDF8', '#171719', '#5D5A55', '#1746A2', '#C94C3F'] },
+      { name: 'Cocoa Linen', family: 'Warm neutral', use: 'Hospitality, craft, food, heritage', colors: ['#E1D4C2', '#F2E8DB', '#291C0E', '#6E473B', '#70483D', '#A06E57'] },
+      { name: 'Burgundy Peach', family: 'Warm human', use: 'Beauty, fashion, intimate editorial work', colors: ['#FED7B8', '#FFE9D8', '#351015', '#7B3D3D', '#59171B', '#B85C54'] },
+      { name: 'Terracotta Sand', family: 'Warm human', use: 'Artisan commerce, travel, lifestyle', colors: ['#F7E3CF', '#FFF7ED', '#2C1810', '#6F4A3B', '#A4472B', '#D97745'] },
+      { name: 'Rose Espresso', family: 'Warm human', use: 'Cosmetics, boutique services, personal brands', colors: ['#F4E3E1', '#FFF8F6', '#2D1518', '#74555A', '#6B1F2B', '#B95669'] },
+      { name: 'Navy Sage', family: 'Natural premium', use: 'Architecture, consulting, sustainability', colors: ['#F4F1DE', '#FFFDF3', '#0D1B2A', '#526354', '#1B263B', '#6B806D'] },
+      { name: 'Deep Teal Fog', family: 'Technical dark', use: 'Cinematic tools, audio, focused dark UI', colors: ['#0D1F23', '#132E35', '#E8F0F2', '#AFB3B7', '#69818D', '#7BC5C9'] },
+      { name: 'Steel Cyan', family: 'Technical dark', use: 'Developer tools, monitoring, technical media', colors: ['#101A21', '#172A35', '#EDF6F8', '#A7BBC3', '#177E89', '#7DD7DE'] },
+      { name: 'Arctic Blue', family: 'Trust', use: 'Cloud products, education, civic technology', colors: ['#EAF2F7', '#FFFFFF', '#102A43', '#52677A', '#276FBF', '#3E91A8'] },
+      { name: 'Midnight Gold', family: 'Cinematic', use: 'Luxury travel, premium finance, events', colors: ['#0B1623', '#13243A', '#F3E7CF', '#B7C2CC', '#B6924D', '#79C2D0'] },
+      { name: 'Sapphire Silver', family: 'Cinematic', use: 'Security, aerospace, premium technology', colors: ['#071B3A', '#0C2A5E', '#F1F4F8', '#B8C1CE', '#2F6FD0', '#AEB8C6'] },
+      { name: 'Emerald Brass', family: 'Cinematic', use: 'Spirits, heritage brands, private clubs', colors: ['#0D211B', '#153B2F', '#F2E8D2', '#B9C3B9', '#3A7B5E', '#C2A56E'] },
+      { name: 'Garnet Rose', family: 'Cinematic', use: 'Music, nightlife, dramatic fashion', colors: ['#26090E', '#530F1D', '#F7E3E8', '#CAA7AE', '#9D174D', '#E7A4B3'] },
+      { name: 'Aubergine Magenta', family: 'Creator dark', use: 'Entertainment, fandom, digital creators', colors: ['#1E0C26', '#3A1247', '#F8EAF8', '#CBB6CF', '#8D35AD', '#EF5DA8'] },
+      { name: 'Ivory Charcoal', family: 'Minimal', use: 'Minimal commerce, galleries, resumes', colors: ['#F8F4EC', '#FFFFFF', '#202124', '#66615A', '#373B3F', '#9A7147'] },
+      { name: 'Plum Mint', family: 'Playful calm', use: 'Wellness technology, communities, education', colors: ['#F0F8F2', '#FFFFFF', '#24122F', '#5F5365', '#6A2E75', '#3F8F70'] },
+      { name: 'Coral Aqua', family: 'Playful', use: 'Creator products, social tools, playful SaaS', colors: ['#FFF5EF', '#FFFFFF', '#263238', '#607078', '#C94F4A', '#237F75'] },
+      { name: 'Indigo Lime', family: 'Playful', use: 'Learning products, innovation, youth tech', colors: ['#F4F5FF', '#FFFFFF', '#1E1B3A', '#5F5C78', '#4B46B8', '#6F8F22'] },
+      { name: 'Clay Sky', family: 'Balanced', use: 'Local services, travel, sustainable goods', colors: ['#F5EBDD', '#FFFFFF', '#2C2521', '#6B625B', '#985136', '#3D7E96'] },
+      { name: 'Neutral Data', family: 'Operational', use: 'Dashboards, administration, analytics', colors: ['#F5F7FA', '#FFFFFF', '#18212B', '#5E6C78', '#2762C5', '#0F806B'] },
+      { name: 'Health Sage', family: 'Care', use: 'Clinics, wellbeing, care coordination', colors: ['#EFF6F0', '#FFFFFF', '#183126', '#566B5F', '#287A50', '#B9644A'] },
+      { name: 'Commerce Navy', family: 'Commerce', use: 'Marketplaces, logistics, subscriptions', colors: ['#F7F8FB', '#FFFFFF', '#111B2E', '#596273', '#163A63', '#C85E1E'] },
+      { name: 'Warning Amber', family: 'Operational', use: 'Alerts, maintenance, safety workflows', colors: ['#FFF8E6', '#FFFFFF', '#33210B', '#735C3B', '#945000', '#B88200'] },
+      { name: 'Mono Red', family: 'Severe', use: 'Incident tools, advocacy, severe editorial UI', colors: ['#F7F7F5', '#FFFFFF', '#171719', '#666666', '#B42318', '#7A1F18'] }
+    ]
+
+    const roles = ['canvas', 'surface', 'ink', 'muted', 'brand', 'accent']
+
+    function rgb(hex) {
+      const value = hex.replace('#', '')
+      return [0, 2, 4].map(index => parseInt(value.slice(index, index + 2), 16))
+    }
+
+    function luminance(hex) {
+      const values = rgb(hex).map(value => {
+        const channel = value / 255
+        return channel <= .03928 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4
+      })
+      return .2126 * values[0] + .7152 * values[1] + .0722 * values[2]
+    }
+
+    function contrast(a, b) {
+      const first = luminance(a)
+      const second = luminance(b)
+      return (Math.max(first, second) + .05) / (Math.min(first, second) + .05)
+    }
+
+    function readableOn(background, preferred, alternate) {
+      return contrast(background, preferred) >= contrast(background, alternate) ? preferred : alternate
+    }
+
+    const grid = document.querySelector('#paletteGrid')
+    grid.innerHTML = palettes.map((palette, paletteIndex) => {
+      const [canvas, surface, ink, muted, brand, accent] = palette.colors
+      const buttonInk = readableOn(brand, '#FFFFFF', ink)
+      const linkColor = contrast(brand, canvas) >= 4.5 ? brand : ink
+      const swatches = palette.colors.map((color, index) => `
+        <div class="swatch">
+          <div class="swatch-color" style="--swatch:${color}"></div>
+          <div class="swatch-label">${roles[index]}<br>${color}</div>
+        </div>
+      `).join('')
+      return `
+        <article class="palette-card">
+          <div class="palette-preview" style="--card-canvas:${canvas};--card-surface:${surface};--card-ink:${ink};--card-muted:${muted};--card-brand:${brand};--card-accent:${accent};--button-ink:${buttonInk};--link-color:${linkColor}">
+            <div class="palette-kicker"><span>${String(paletteIndex + 1).padStart(2, '0')}</span><span>${palette.family}</span></div>
+            <div class="component">
+              <h3>${palette.name}</h3>
+              <p>One clear field, one readable surface, and controlled emphasis.</p>
+              <div class="component-row"><span class="sample-button">Primary action</span><a class="sample-link" href="#references-title">Text link</a></div>
+              <div class="accent-rule"></div>
+            </div>
+          </div>
+          <div class="palette-body">
+            <div class="palette-title"><h3>${palette.name}</h3><span>${palette.family}</span></div>
+            <p class="palette-use">${palette.use}</p>
+            <div class="swatches">${swatches}</div>
+            <div class="contrast-row"><span>Ink / canvas<br><b>${contrast(ink, canvas).toFixed(1)}:1</b></span><span>Muted / surface<br><b>${contrast(muted, surface).toFixed(1)}:1</b></span></div>
+          </div>
+        </article>
+      `
+    }).join('')
+  </script>
+</body>
+</html>

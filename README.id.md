@@ -107,6 +107,7 @@ Setiap panduan skill memiliki minimal dua screenshot dari halaman demo yang bena
 Contohnya meliputi:
 
 - landing page editorial pada viewport lebar dan sempit;
+- pustaka color system dengan 24 palet semantik dan referensi yang disediakan;
 - workspace operasional dengan filter antrean yang berfungsi;
 - form aksesibel pada state default dan error;
 - artikel panjang pada viewport lebar dan sempit;

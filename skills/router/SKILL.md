@@ -37,6 +37,8 @@ Choose only the context required for the current phase. This skill routes work. 
 | Task | Primary | Optional support |
 |---|---|---|
 | New visual website | design-direction | product-copy |
+| Palette, theme, or brand-color system | color-systems | accessibility |
+| Existing UI color or contrast change | color-systems | accessibility |
 | Existing UI change | design-direction or interface-craft | accessibility |
 | Frontend implementation | interface-craft | responsive-mobile |
 | Generic or machine-like web output | clean-build-web | interface-craft |
@@ -60,6 +62,8 @@ Choose only the context required for the current phase. This skill routes work. 
 
 - Prefer a task-specific skill over a broad skill.
 - Do not load design-direction for a small code repair with no visual decision.
+- Prefer color-systems over design-direction when palette roles, theme pairing, or contrast are the main decision.
+- Do not load color-systems for photo grading or when every color token is already fixed.
 - Do not load browser-acceptance when the user asks for source review only.
 - Do not load release-delivery before the implementation is ready to ship.
 - Do not load product-copy for utility labels unless wording is part of the task.
