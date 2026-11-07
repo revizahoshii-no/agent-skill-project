@@ -4,7 +4,7 @@
 
 [Buka website dokumentasi](https://revizahoshii-no.github.io/agent-skill-project/)
 
-Sistem skill modular untuk pekerjaan produk web dengan pemuatan selektif. Router kecil mengenali fase aktif, membaca registry machine-readable, lalu memilih hanya instruksi domain yang dibutuhkan pada fase tersebut.
+Sistem skill modular untuk pekerjaan software dan produk web dengan pemuatan selektif. Router kecil mengenali fase aktif, membaca registry machine-readable, lalu memilih hanya instruksi domain yang dibutuhkan pada fase tersebut.
 
 ![Halaman dokumentasi yang menampilkan model routing ringan](docs/images/docs-home-desktop.png)
 
@@ -13,7 +13,7 @@ Sistem skill modular untuk pekerjaan produk web dengan pemuatan selektif. Router
 Bundel instruksi besar menghabiskan konteks sebelum agent memahami tugas. Repository ini menggunakan model yang lebih terbatas:
 
 - satu entrypoint routing yang ringan;
-- empat belas skill domain mandiri;
+- delapan belas skill domain mandiri;
 - tidak ada pemuatan skill secara rekursif;
 - tidak ada perintah untuk memuat seluruh kumpulan skill;
 - panduan manusia dan screenshot tidak dimuat otomatis;
@@ -21,6 +21,12 @@ Bundel instruksi besar menghabiskan konteks sebelum agent memahami tugas. Reposi
 - routing diulang saat fase pekerjaan berubah.
 
 Hasilnya adalah rencana konteks yang terbatas, bukan prompt default yang besar.
+
+## Asal Clean Build
+
+Empat modul Clean Build berawal dari kontrak kerja pribadi yang dibentuk melalui banyak proyek software bersama berbagai coding agent. Aturannya disempurnakan lewat riset dan pengujian nyata, terutama untuk menghadapi scope drift, hasil generik, fakta teknis yang ditebak, aksi runtime berisiko, dan klaim selesai tanpa verifikasi langsung.
+
+Instruksi panjang aslinya dipisah menjadi modul Core, Web, Runtime, dan Verification agar router dapat memilih kontrak kualitas yang relevan tanpa memuat panduan platform yang tidak dibutuhkan.
 
 ## Mulai dari sini
 
@@ -87,6 +93,10 @@ Router tidak berisi workflow domain. Skill domain tidak boleh membuka skill doma
 | Editorial article | Membuat pengalaman baca panjang | [Panduan](docs/guides/editorial-article.md) |
 | Web presentation | Membuat narasi web seperti slide | [Panduan](docs/guides/web-presentation.md) |
 | Motion showreel | Merencanakan rangkaian visual pendek dan style frame | [Panduan](docs/guides/motion-showreel.md) |
+| Clean Build Core | Mengendalikan scope, kebenaran, kebersihan kode, konteks, dan klaim selesai | [Panduan](docs/guides/clean-build-core.md) |
+| Clean Build Web | Membersihkan hasil web generik, konten karangan, kontrol mati, dan struktur template | [Panduan](docs/guides/clean-build-web.md) |
+| Clean Build Runtime | Membangun API, backend, bot, script, dan CLI dengan aman | [Panduan](docs/guides/clean-build-runtime.md) |
+| Clean Build Verification | Membuktikan perilaku software pada permukaan browser dan non-browser | [Panduan](docs/guides/clean-build-verification.md) |
 
 Trigger, exclusion, fase, dan path machine-readable berada di [`skills/registry.json`](skills/registry.json).
 

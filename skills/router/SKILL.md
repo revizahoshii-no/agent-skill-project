@@ -39,7 +39,11 @@ Choose only the context required for the current phase. This skill routes work. 
 | New visual website | design-direction | product-copy |
 | Existing UI change | design-direction or interface-craft | accessibility |
 | Frontend implementation | interface-craft | responsive-mobile |
+| Generic or machine-like web output | clean-build-web | interface-craft |
 | Mobile defect | responsive-mobile | accessibility |
+| Scope, honesty, or code-hygiene risk | clean-build-core | relevant domain skill |
+| API, backend, bot, script, or CLI | clean-build-runtime | clean-build-core |
+| Non-browser verification | clean-build-verification | clean-build-core |
 | Accessibility review | accessibility | browser-acceptance |
 | New marketing copy | product-copy | design-direction |
 | Image work | asset-image | design-direction |
@@ -60,6 +64,11 @@ Choose only the context required for the current phase. This skill routes work. 
 - Do not load release-delivery before the implementation is ready to ship.
 - Do not load product-copy for utility labels unless wording is part of the task.
 - Do not load asset-image when no asset will be created or changed.
+- Treat the four Clean Build modules as alternatives selected by risk, not as a bundle.
+- Select clean-build-core only when cross-cutting scope, truth, code hygiene, or context continuity materially changes execution.
+- Select clean-build-web for content and interface cleanup, clean-build-runtime for non-browser software, and clean-build-verification for executable acceptance beyond a browser-only path.
+- Prefer browser-acceptance over clean-build-verification when the entire acceptance scope is a rendered website.
+- Never load the four Clean Build modules together.
 - Do not load both web-presentation and motion-showreel unless the deliverable explicitly combines click-driven and timed output.
 
 ## Phase handoff

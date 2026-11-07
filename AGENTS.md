@@ -9,6 +9,7 @@ This repository is intentionally modular. Context efficiency is a functional req
 3. Load at most two primary skills and one supporting skill for the current phase.
 4. Load references or human guides only when the selected skill explicitly requires them.
 5. When the task moves to a new phase, stop expanding the previous skill and route again.
+6. Treat Clean Build Core, Web, Runtime, and Verification as targeted modules, never as one preload bundle.
 
 ## Prohibited loading patterns
 

@@ -84,7 +84,7 @@ for (const [route, width, height] of jobs) {
   if (result.brokenImages) failures.push(`${route} at ${width}px has ${result.brokenImages} broken images`)
   if (result.unnamedImages) failures.push(`${route} at ${width}px has ${result.unnamedImages} images without alt text`)
   if (!result.title) failures.push(`${route} at ${width}px has no document title`)
-  if (route === '/docs/' && (result.skills.length !== 14 || result.skills.some(count => count < 2))) {
+  if (route === '/docs/' && (result.skills.length !== 18 || result.skills.some(count => count < 2))) {
     failures.push(`${route} at ${width}px does not show two examples for each domain skill`)
   }
   for (const error of runtimeErrors) failures.push(`${route} at ${width}px runtime error: ${error}`)

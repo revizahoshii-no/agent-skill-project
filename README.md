@@ -4,7 +4,7 @@
 
 [Open the documentation website](https://revizahoshii-no.github.io/agent-skill-project/)
 
-A modular web product skill system for selective loading. A small router identifies the current phase, reads a machine-readable registry, and selects only the domain instructions needed for that phase.
+A modular software and web product skill system for selective loading. A small router identifies the current phase, reads a machine-readable registry, and selects only the domain instructions needed for that phase.
 
 ![Documentation home showing the lightweight routing model](docs/images/docs-home-desktop.png)
 
@@ -13,7 +13,7 @@ A modular web product skill system for selective loading. A small router identif
 Large instruction bundles consume context before the agent has understood the task. This repository uses a different model:
 
 - one lightweight routing entrypoint;
-- fourteen independent domain skills;
+- eighteen independent domain skills;
 - no recursive skill loading;
 - no command that loads the complete skill set;
 - no automatic loading of human guides or screenshots;
@@ -21,6 +21,12 @@ Large instruction bundles consume context before the agent has understood the ta
 - rerouting when the phase changes.
 
 The result is a bounded context plan rather than a large default prompt.
+
+## Clean Build origin
+
+The four Clean Build modules began as a personal working contract developed from repeated software projects with many coding agents. The rules were refined through practical research and testing, especially around scope drift, generic output, guessed technical facts, unsafe runtime actions, and completion claims made without direct verification.
+
+The original long instruction was separated into Core, Web, Runtime, and Verification modules so the router can select the relevant quality contract without loading unrelated platform guidance.
 
 ## Start here
 
@@ -87,6 +93,10 @@ The router contains no domain workflow. Domain skills cannot open other domain s
 | Editorial article | Building a long-form reading experience | [Guide](docs/guides/editorial-article.md) |
 | Web presentation | Building a slide-like web narrative | [Guide](docs/guides/web-presentation.md) |
 | Motion showreel | Planning short visual sequences and style frames | [Guide](docs/guides/motion-showreel.md) |
+| Clean Build Core | Controlling scope, truth, code hygiene, context, and completion claims | [Guide](docs/guides/clean-build-core.md) |
+| Clean Build Web | Removing generic web output, fabricated content, dead controls, and template structure | [Guide](docs/guides/clean-build-web.md) |
+| Clean Build Runtime | Building APIs, backends, bots, scripts, and CLI tools safely | [Guide](docs/guides/clean-build-runtime.md) |
+| Clean Build Verification | Proving software behavior across browser and non-browser surfaces | [Guide](docs/guides/clean-build-verification.md) |
 
 Machine-readable triggers, exclusions, phases, and paths live in [`skills/registry.json`](skills/registry.json).
 

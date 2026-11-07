@@ -25,6 +25,10 @@ DOMAIN_IDS = [
     "editorial-article",
     "web-presentation",
     "motion-showreel",
+    "clean-build-core",
+    "clean-build-web",
+    "clean-build-runtime",
+    "clean-build-verification",
 ]
 COMPLETION_SECTIONS = [
     "Output contract",
@@ -158,8 +162,8 @@ def validate_manifest_and_registry(errors: list[str]) -> None:
     if not isinstance(skills, list):
         fail(errors, "Registry skills must be an array")
         return
-    if len(skills) != 15:
-        fail(errors, f"Registry must contain 15 entries, found {len(skills)}")
+    if len(skills) != 19:
+        fail(errors, f"Registry must contain 19 entries, found {len(skills)}")
     seen: set[str] = set()
     paths: set[str] = set()
     for entry in skills:
@@ -330,7 +334,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
     print("Validation passed")
-    print("15 registry entries, 14 documented domains, bounded loading policy, local links, and content safety checks passed")
+    print("19 registry entries, 18 documented domains, bounded loading policy, local links, and content safety checks passed")
     return 0
 
 
