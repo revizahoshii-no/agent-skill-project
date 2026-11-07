@@ -1,7 +1,7 @@
 ---
 name: browser-acceptance
 description: Run evidence-based browser acceptance across runtime, layout, interaction, accessibility, motion preferences, and visual quality, then repair and retest failures.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Browser Acceptance
@@ -52,12 +52,18 @@ Reuse the project's intended server and dependencies. Do not change production d
 - Verify menus, tabs, dialogs, toggles, forms, and accordions change state correctly.
 - Verify validation, submission feedback, and recovery.
 - Verify keyboard order, activation, focus, and Escape behavior.
+- For blocking overlays, verify background scroll lock, inert content, focus containment, scroll restoration, and focus return.
+- Verify accidental-selection shielding affects only intended interface chrome and never blocks input, paste, code, or explicit copy targets.
 - Exercise empty, loading, error, disabled, and permission states when in scope.
 
 ### Motion
 
 - Interaction is never blocked by animation.
-- Reduced motion preserves content and task completion.
+- Direction-aware reveal enters from the expected side while scrolling down and up.
+- Scroll reveal does not hide focused content or replay continuously near an observer boundary.
+- Native wheel and touch scrolling remain intact unless inertial scrolling was explicitly approved.
+- Animation ends in the correct state after interruption or rapid input.
+- Reduced motion preserves content and task completion without long-running animations.
 - Long autoplay motion has controls.
 
 ## Viewports

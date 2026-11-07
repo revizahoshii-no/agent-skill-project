@@ -29,7 +29,9 @@
 - Organization: each domain presents a decision template, reference or rule system, implementation direction, and browser-rendered evidence in that order.
 - Style range: the documentation shell stays consistent while example surfaces may use restrained luxury, organic editorial, character-led, nostalgic, illustrative, or neo-brutal directions when the product context supports them.
 - Imagery: screenshots come from real local demos; supplied references are organized as studies and generated still-life assets appear only where imagery is part of the lesson.
-- Motion: state feedback only, with reduced-motion support; documentation never depends on animation.
+- Motion: state feedback, direction-aware reveal, and overlay continuity use bounded transform and opacity with reduced-motion support; documentation never depends on animation.
+- Touch behavior: accidental selection shielding is scoped to interface chrome while useful reading, code, form values, copy, and paste remain available.
+- Overlay behavior: blocking drawers and dialogs preserve scroll position, inert the background, contain focus, and restore both focus and scroll on close.
 
 ## Visual Tokens
 

@@ -1,6 +1,6 @@
 {
   "name": "agent-skill-project",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Modular skills for clean software construction, web design, implementation, quality, research, verification, and delivery.",
   "entrypoint": "skills/router/SKILL.md",
   "registry": "skills/registry.json",

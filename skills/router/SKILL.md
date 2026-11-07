@@ -42,6 +42,7 @@ Choose only the context required for the current phase. This skill routes work. 
 | Existing UI color or contrast change | color-systems | accessibility |
 | Existing UI change | design-direction or interface-craft | accessibility |
 | Loading state, progress, or skeleton | loading-experience | accessibility |
+| UI motion, drawer, modal, scroll lock, or accidental selection | interface-craft | accessibility |
 | Frontend implementation | interface-craft | responsive-mobile |
 | Generic or machine-like web output | clean-build-web | interface-craft |
 | Mobile defect | responsive-mobile | accessibility |
@@ -71,6 +72,8 @@ Choose only the context required for the current phase. This skill routes work. 
 - Do not load color-systems for photo grading or when every color token is already fixed.
 - Prefer loading-experience when waiting, progress, skeleton, staged reveal, or loading recovery is the main decision.
 - Do not load loading-experience to disguise an unmeasured speed defect or for a synchronous state change.
+- Prefer interface-craft for transition choreography, direction-aware reveal, overlay scroll lock, focus return, or accidental-selection shielding.
+- Treat accidental-selection shielding as selective interaction behavior, not content security or global copy blocking.
 - Do not load browser-acceptance when the user asks for source review only.
 - Do not load release-delivery before the implementation is ready to ship.
 - Do not load product-copy for utility labels unless wording is part of the task.

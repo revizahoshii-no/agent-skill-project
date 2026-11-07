@@ -82,7 +82,7 @@ The router contains no domain workflow. Domain skills cannot open other domain s
 | Design direction | The visual thesis or composition is unresolved | [Guide](docs/guides/design-direction.md) |
 | Style atlas | Selecting among multiple website styles or translating references into one buildable direction | [Guide](docs/guides/style-atlas.md) |
 | Color systems | Selecting palette roles, deriving colors from references, pairing themes, or repairing contrast | [Guide](docs/guides/color-systems.md) |
-| Interface craft | Building forms, navigation, dashboards, controls, or task flows | [Guide](docs/guides/interface-craft.md) |
+| Interface craft | Building forms, navigation, dashboards, transition choreography, drawers, scroll lock, or task flows | [Guide](docs/guides/interface-craft.md) |
 | Loading experience | Designing loaders, progress, skeletons, staged feedback, and waiting recovery | [Guide](docs/guides/loading-experience.md) |
 | Responsive mobile | Reflow, touch, overflow, or narrow-screen behavior matters | [Guide](docs/guides/responsive-mobile.md) |
 | Accessibility | Reviewing semantics, keyboard behavior, focus, errors, contrast, or motion | [Guide](docs/guides/accessibility.md) |
@@ -111,6 +111,7 @@ Examples include:
 
 - a decision-led atlas of twenty website style references in four families;
 - twelve live loading patterns with progress semantics and reduced motion;
+- direction-aware reveal, selective interaction shielding, and a scroll-locking drawer;
 - a semantic color-system library with twenty-four palette families;
 - editorial landing page at wide and narrow viewports;
 - operational workspace with a working queue filter;

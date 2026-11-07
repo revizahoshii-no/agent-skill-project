@@ -82,7 +82,7 @@ Router tidak berisi workflow domain. Skill domain tidak boleh membuka skill doma
 | Design direction | Tesis visual atau komposisi belum jelas | [Panduan](docs/guides/design-direction.md) |
 | Style atlas | Memilih di antara banyak style website atau menerjemahkan referensi menjadi satu arah yang dapat dibangun | [Panduan](docs/guides/style-atlas.md) |
 | Color systems | Memilih role palet, mengambil hubungan warna dari referensi, memasangkan tema, atau memperbaiki kontras | [Panduan](docs/guides/color-systems.md) |
-| Interface craft | Membangun form, navigasi, dashboard, kontrol, atau alur tugas | [Panduan](docs/guides/interface-craft.md) |
+| Interface craft | Membangun form, navigasi, dashboard, koreografi transisi, drawer, scroll lock, atau alur tugas | [Panduan](docs/guides/interface-craft.md) |
 | Loading experience | Mendesain loader, progress, skeleton, feedback bertahap, dan recovery saat menunggu | [Panduan](docs/guides/loading-experience.md) |
 | Responsive mobile | Reflow, sentuhan, overflow, atau layar sempit perlu ditangani | [Panduan](docs/guides/responsive-mobile.md) |
 | Accessibility | Memeriksa semantik, keyboard, fokus, error, kontras, atau motion | [Panduan](docs/guides/accessibility.md) |
@@ -111,6 +111,7 @@ Contohnya meliputi:
 
 - atlas berbasis keputusan untuk 20 referensi style website dalam empat keluarga;
 - 12 pola loading hidup dengan semantik progress dan reduced motion;
+- direction-aware reveal, selective interaction shielding, dan drawer dengan scroll lock;
 - landing page editorial pada viewport lebar dan sempit;
 - pustaka color system dengan 24 palet semantik dan referensi yang disediakan;
 - workspace operasional dengan filter antrean yang berfungsi;

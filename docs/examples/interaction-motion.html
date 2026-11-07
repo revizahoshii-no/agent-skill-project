@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Direction-aware reveal, selective interaction shielding, and an accessible drawer with background scroll restoration.">
+  <meta name="theme-color" content="#f1ecdf">
+  <title>Interaction Motion Field</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f1ecdf;
+      --surface: #fffaf0;
+      --ink: #161616;
+      --muted: #676158;
+      --line: #aaa298;
+      --blue: #2155d6;
+      --coral: #ff684e;
+      --acid: #d6ff37;
+      --ease-premium: cubic-bezier(.16, 1, .3, 1);
+      --motion-fast: 180ms;
+      --motion-state: 380ms;
+      --motion-reveal: 700ms;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+      --mono: "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--paper); color: var(--ink); font-family: var(--sans); }
+    body { margin: 0; min-width: 280px; overflow-x: hidden; }
+    body.is-locked { position: fixed; left: 0; right: 0; width: 100%; overflow: hidden; }
+    button, a { color: inherit; }
+    button { font: inherit; }
+    button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+    .skip-link { position: fixed; z-index: 80; top: 12px; left: 12px; transform: translateY(-160%); padding: 12px 16px; color: white; background: var(--blue); font-weight: 800; }
+    .skip-link:focus { transform: none; }
+
+    [data-ui-shield] {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    [data-copyable], input, textarea, [contenteditable="true"] {
+      -webkit-user-select: text;
+      user-select: text;
+      -webkit-touch-callout: default;
+    }
+
+    [data-copyable]::selection { color: white; background: var(--blue); }
+
+    .topbar {
+      position: sticky;
+      z-index: 30;
+      top: 0;
+      min-height: 64px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      padding: 10px clamp(18px, 4vw, 58px);
+      color: white;
+      background: rgba(22, 22, 22, .96);
+      border-bottom: 1px solid #3b3b3b;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand { font: 700 13px/1.2 var(--mono); text-decoration: none; letter-spacing: .04em; }
+    .direction-meter { display: flex; align-items: center; gap: 9px; color: #c8c4bb; font: 10px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .direction-dot { width: 8px; aspect-ratio: 1; border-radius: 50%; background: var(--acid); box-shadow: 0 0 0 4px rgba(214,255,55,.12); transition: transform var(--motion-state) var(--ease-premium); }
+    body[data-scroll-direction="up"] .direction-dot { transform: translateY(-4px); }
+    body[data-scroll-direction="down"] .direction-dot { transform: translateY(4px); }
+    .topbar-action { justify-self: end; }
+
+    .button {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 16px;
+      color: var(--ink);
+      background: var(--acid);
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform var(--motion-fast) var(--ease-premium), box-shadow var(--motion-fast) var(--ease-premium);
+    }
+    .button:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+    .button:active { transform: translate(2px, 2px); box-shadow: none; }
+
+    .hero {
+      min-height: 780px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(320px, .72fr);
+      border-bottom: 1px solid var(--ink);
+    }
+    .hero-copy { display: grid; align-content: end; padding: clamp(56px, 8vw, 112px) clamp(22px, 6vw, 88px); }
+    .eyebrow { margin: 0 0 22px; color: var(--blue); font: 700 11px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    h1 { max-width: 930px; margin: 0; font: 400 clamp(68px, 10vw, 146px)/.78 var(--serif); letter-spacing: -.075em; text-wrap: balance; }
+    .lede { max-width: 700px; margin: 38px 0 0; color: var(--muted); font-size: clamp(17px, 1.8vw, 23px); line-height: 1.55; }
+
+    .hero-figure { position: relative; min-height: 520px; overflow: hidden; color: white; background: var(--blue); border-left: 1px solid var(--ink); }
+    .hero-figure span { position: absolute; font: 700 11px/1 var(--mono); letter-spacing: .08em; }
+    .hero-figure span:first-child { top: 28px; left: 28px; }
+    .hero-figure span:nth-child(2) { right: 28px; bottom: 28px; }
+    .motion-bars { position: absolute; inset: 20% 14%; display: grid; align-content: center; gap: 18px; transform: rotate(-8deg); }
+    .motion-bars i { display: block; height: 50px; background: var(--paper); transform-origin: left; animation: breathe 3.4s var(--ease-premium) infinite alternate; }
+    .motion-bars i:nth-child(2) { width: 76%; margin-left: 12%; background: var(--coral); animation-delay: -.8s; }
+    .motion-bars i:nth-child(3) { width: 58%; margin-left: 31%; background: var(--acid); animation-delay: -1.6s; }
+    @keyframes breathe { from { transform: scaleX(.45) translateX(-16px); } to { transform: scaleX(1) translateX(0); } }
+
+    .section { padding: 86px clamp(20px, 6vw, 88px) 98px; border-bottom: 1px solid var(--ink); }
+    .section-head { display: grid; grid-template-columns: 72px minmax(0, 1fr) minmax(220px, .4fr); gap: 24px; align-items: start; margin-bottom: 48px; }
+    .section-number { padding-top: 8px; color: var(--coral); font: 700 12px var(--mono); }
+    .section-head h2 { max-width: 900px; margin: 0; font: 400 clamp(50px, 7vw, 96px)/.88 var(--serif); letter-spacing: -.055em; }
+    .section-head p { margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+    .principle-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--ink); }
+    .principle { min-height: 260px; padding: 24px; background: var(--surface); border-right: 1px solid var(--ink); }
+    .principle:last-child { border-right: 0; }
+    .principle b { color: var(--blue); font: 700 11px var(--mono); }
+    .principle h3 { margin: 44px 0 14px; font: 400 30px/1 var(--serif); }
+    .principle p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+    .shield-section { background: var(--coral); }
+    .shield-section .section-head p { color: #4d2e28; }
+    .shield-section .section-number { color: var(--ink); }
+    .shield-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .shield-card { min-height: 360px; display: grid; align-content: space-between; padding: clamp(24px, 4vw, 48px); background: var(--paper); border: 1px solid var(--ink); }
+    .shield-card.protected { cursor: default; }
+    .shield-card.copyable { background: var(--blue); color: white; }
+    .shield-card span { font: 700 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .shield-card h3 { max-width: 500px; margin: 62px 0 18px; font: 400 clamp(36px, 4vw, 62px)/.9 var(--serif); letter-spacing: -.045em; }
+    .shield-card p { max-width: 520px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .shield-card.copyable p { color: #dfe7ff; }
+    .shield-card footer { margin-top: 38px; padding-top: 14px; border-top: 1px solid currentColor; font: 11px/1.5 var(--mono); }
+
+    .recipe-section { color: white; background: var(--ink); }
+    .recipe-section .section-head p { color: #aaa69d; }
+    .recipe-list { border-top: 1px solid #454545; }
+    .recipe-row { display: grid; grid-template-columns: 70px minmax(0, 1fr) minmax(200px, .55fr); gap: 24px; padding: 27px 0; border-bottom: 1px solid #454545; }
+    .recipe-row span { color: var(--acid); font: 700 11px var(--mono); }
+    .recipe-row strong { font: 400 27px/1 var(--serif); }
+    .recipe-row p { margin: 0; color: #aaa69d; font-size: 13px; line-height: 1.55; }
+
+    .drawer-section { background: var(--acid); }
+    .drawer-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: end; padding: clamp(28px, 5vw, 64px); color: white; background: var(--blue); border: 1px solid var(--ink); }
+    .drawer-panel h3 { max-width: 820px; margin: 0; font: 400 clamp(42px, 6vw, 82px)/.9 var(--serif); letter-spacing: -.05em; }
+    .drawer-panel p { max-width: 620px; margin: 24px 0 0; color: #dfe7ff; line-height: 1.65; }
+
+    .closing { min-height: 620px; display: grid; align-content: center; padding: 90px clamp(20px, 6vw, 88px); color: var(--paper); background: var(--ink); }
+    .closing p { margin: 0 0 28px; color: var(--acid); font: 700 11px var(--mono); letter-spacing: .11em; text-transform: uppercase; }
+    .closing strong { max-width: 1080px; font: 400 clamp(58px, 9vw, 132px)/.8 var(--serif); letter-spacing: -.07em; }
+
+    .motion-ready .reveal:not(.is-visible) { opacity: 0; }
+    .reveal { transform-origin: center; }
+
+    .overlay { position: fixed; z-index: 60; inset: 0; visibility: hidden; pointer-events: none; transition: visibility 0s linear 520ms; }
+    .overlay.is-open { visibility: visible; pointer-events: auto; transition-delay: 0s; }
+    .backdrop { position: absolute; inset: 0; opacity: 0; background: rgba(22, 22, 22, .68); backdrop-filter: blur(6px); transition: opacity var(--motion-state) var(--ease-premium); }
+    .overlay.is-open .backdrop { opacity: 1; }
+    .drawer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(520px, 100%);
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      overflow: hidden;
+      color: var(--ink);
+      background: var(--surface);
+      border-left: 1px solid var(--ink);
+      transform: translateX(100%);
+      transition: transform 520ms var(--ease-premium);
+    }
+    .overlay.is-open .drawer { transform: none; }
+    .drawer-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px; border-bottom: 1px solid var(--ink); }
+    .drawer-head strong { font: 700 13px var(--mono); }
+    .close-button { width: 44px; aspect-ratio: 1; display: grid; place-items: center; color: white; background: var(--ink); border: 0; cursor: pointer; }
+    .drawer-body { overflow-y: auto; overscroll-behavior: contain; padding: clamp(26px, 6vw, 56px); }
+    .drawer-body .eyebrow { margin-bottom: 20px; }
+    .drawer-body h2 { margin: 0; font: 400 clamp(48px, 8vw, 80px)/.86 var(--serif); letter-spacing: -.055em; }
+    .drawer-body > p { margin: 26px 0 34px; color: var(--muted); line-height: 1.65; }
+    .drawer-checks { display: grid; gap: 1px; border: 1px solid var(--ink); background: var(--ink); }
+    .drawer-checks div { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; padding: 17px; background: var(--paper); }
+    .drawer-checks span { color: var(--blue); font: 700 11px var(--mono); }
+    .drawer-checks p { margin: 0; font-size: 13px; line-height: 1.5; }
+    .drawer-foot { padding: 20px; border-top: 1px solid var(--ink); }
+    .drawer-foot .button { width: 100%; }
+
+    .page-footer { display: flex; justify-content: space-between; gap: 24px; padding: 30px clamp(20px, 6vw, 88px); color: #aaa69d; background: var(--ink); border-top: 1px solid #454545; font: 11px/1.5 var(--mono); }
+    .page-footer p { max-width: 700px; margin: 0; }
+    .page-footer a { color: var(--acid); }
+
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-figure { border-left: 0; border-top: 1px solid var(--ink); }
+      .section-head { grid-template-columns: 52px minmax(0, 1fr); }
+      .section-head > p { grid-column: 2; }
+      .principle-grid { grid-template-columns: 1fr; }
+      .principle { border-right: 0; border-bottom: 1px solid var(--ink); }
+      .principle:last-child { border-bottom: 0; }
+      .recipe-row { grid-template-columns: 52px minmax(0, 1fr); }
+      .recipe-row p { grid-column: 2; }
+      .drawer-panel { grid-template-columns: 1fr; align-items: start; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar { grid-template-columns: 1fr auto; }
+      .direction-meter { display: none; }
+      .hero { min-height: auto; }
+      .hero-copy { min-height: 650px; }
+      h1 { font-size: clamp(64px, 20vw, 88px); }
+      .hero-figure { min-height: 420px; }
+      .section { padding-block: 68px 76px; }
+      .section-head { grid-template-columns: 1fr; gap: 12px; }
+      .section-head > p { grid-column: 1; }
+      .shield-grid { grid-template-columns: 1fr; }
+      .shield-card { min-height: 330px; }
+      .recipe-row { grid-template-columns: 34px minmax(0, 1fr); }
+      .drawer { width: 100%; border-left: 0; }
+      .page-footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+      .motion-ready .reveal:not(.is-visible) { opacity: 1; }
+      .motion-bars i { transform: none; }
+      .overlay { transition-delay: .01ms !important; }
+    }
+  </style>
+</head>
+<body data-scroll-direction="down">
+  <a class="skip-link" href="#main">Skip to interaction field</a>
+  <div id="pageShell">
+    <header class="topbar" data-ui-shield>
+      <a class="brand" href="../index.html">AGENT SKILL PROJECT / INTERACTION FIELD</a>
+      <div class="direction-meter" aria-live="polite"><i class="direction-dot"></i><span id="directionLabel">Scrolling down</span></div>
+      <button class="button topbar-action" id="drawerTrigger" type="button" aria-controls="motionDrawer" aria-expanded="false">Open field notes</button>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Direction-aware interface motion</p>
+          <h1>Motion that knows where you are going.</h1>
+          <p class="lede">Elements enter from the direction of travel, interface chrome resists accidental long-press selection, and blocking overlays preserve the exact page position they interrupted.</p>
+        </div>
+        <div class="hero-figure reveal" data-delay="100" aria-hidden="true">
+          <span>DOWN +48</span><span>UP -48</span>
+          <div class="motion-bars"><i></i><i></i><i></i></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="principles-title">
+        <header class="section-head reveal">
+          <span class="section-number">01</span>
+          <h2 id="principles-title">Three rules for calm movement.</h2>
+          <p>Direction, continuity, and restraint make the interface feel responsive without replacing native scrolling.</p>
+        </header>
+        <div class="principle-grid">
+          <article class="principle reveal" data-delay="0"><b>DIRECTION</b><h3>Enter from travel</h3><p>Downward scrolling reveals from below. Upward scrolling reveals from above. Distance stays short enough to preserve context.</p></article>
+          <article class="principle reveal" data-delay="70"><b>CONTINUITY</b><h3>Keep object identity</h3><p>FLIP-style motion is reserved for the same object changing position, not used as decoration between unrelated elements.</p></article>
+          <article class="principle reveal" data-delay="140"><b>RESTRAINT</b><h3>Finish before input</h3><p>Ready content is never held for choreography. Interrupted animations settle in the correct final state.</p></article>
+        </div>
+      </section>
+
+      <section class="section shield-section" aria-labelledby="shield-title">
+        <header class="section-head reveal">
+          <span class="section-number">02</span>
+          <h2 id="shield-title">No accidental blue selection.</h2>
+          <p>Shield controls and decorative interface text. Keep useful reading, values, code, and form content selectable.</p>
+        </header>
+        <div class="shield-grid">
+          <article class="shield-card protected reveal" id="shieldedCard" data-ui-shield>
+            <span>Interface shielded</span>
+            <div><h3>Press, drag, or hold this control card.</h3><p>The browser should not treat this compact interface surface as text to copy, search, or drag.</p></div>
+            <footer>user-select: none · touch-callout: none · transparent tap highlight</footer>
+          </article>
+          <article class="shield-card copyable reveal" id="copyableCard" data-copyable data-delay="90">
+            <span>Reading stays selectable</span>
+            <div><h3>Select this useful sentence.</h3><p>The reference value is Motion Field 24-A. People can select it, copy it, or use browser tools because it is content, not interface chrome.</p></div>
+            <footer>user-select: text · visible selection color · copy remains available</footer>
+          </article>
+        </div>
+      </section>
+
+      <section class="section recipe-section" aria-labelledby="recipe-title">
+        <header class="section-head reveal">
+          <span class="section-number">03</span>
+          <h2 id="recipe-title">A bounded reveal recipe.</h2>
+          <p>The page uses native scrolling, passive direction detection, IntersectionObserver, and transform-led Web Animations.</p>
+        </header>
+        <div class="recipe-list">
+          <div class="recipe-row reveal"><span>01</span><strong>Downward entry</strong><p>Opacity 0 to 1, translateY 48 to 0, scale .98 to 1.</p></div>
+          <div class="recipe-row reveal"><span>02</span><strong>Upward entry</strong><p>Opacity 0 to 1, translateY -48 to 0, scale .98 to 1.</p></div>
+          <div class="recipe-row reveal"><span>03</span><strong>Premium settle</strong><p>700 milliseconds with cubic-bezier(.16, 1, .3, 1).</p></div>
+          <div class="recipe-row reveal"><span>04</span><strong>Meaningful replay</strong><p>Reset only after fully leaving the viewport in the direction of travel.</p></div>
+          <div class="recipe-row reveal"><span>05</span><strong>Reduced state</strong><p>Show the final content immediately with no directional travel.</p></div>
+        </div>
+      </section>
+
+      <section class="section drawer-section" aria-labelledby="drawer-title">
+        <header class="section-head reveal">
+          <span class="section-number">04</span>
+          <h2 id="drawer-title">Lock the background, not the user.</h2>
+          <p>A blocking drawer stores the page position, contains focus and overscroll, then restores the exact position and trigger focus.</p>
+        </header>
+        <div class="drawer-panel reveal">
+          <div><h3>Open the drawer after scrolling this far.</h3><p>Try wheel, touch, Tab, Shift+Tab, and Escape. The page behind it stays fixed while the drawer remains usable.</p></div>
+          <button class="button" id="drawerTriggerSection" type="button" aria-controls="motionDrawer" aria-expanded="false">Test scroll lock</button>
+        </div>
+      </section>
+
+      <section class="closing reveal" aria-label="Closing statement">
+        <p>Interaction field complete</p>
+        <strong>Move less. Communicate more.</strong>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>Selection shielding is scoped to interface chrome. Native scrolling, text copy, input, paste, keyboard focus, and reduced motion remain intact.</p>
+      <a href="../index.html#interface-craft">Return to documentation</a>
+    </footer>
+  </div>
+
+  <div class="overlay" id="motionOverlay" aria-hidden="true">
+    <div class="backdrop" id="drawerBackdrop"></div>
+    <aside class="drawer" id="motionDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerHeading" tabindex="-1">
+      <header class="drawer-head" data-ui-shield><strong>MOTION FIELD / NOTES</strong><button class="close-button" id="drawerClose" type="button" aria-label="Close field notes">×</button></header>
+      <div class="drawer-body">
+        <p class="eyebrow">Blocking overlay contract</p>
+        <h2 id="drawerHeading">The page is still exactly where you left it.</h2>
+        <p>This drawer is modal. The background is inert and fixed at its stored scroll position while focus and touch movement stay inside this panel.</p>
+        <div class="drawer-checks">
+          <div><span>01</span><p>Record scroll position and scrollbar width.</p></div>
+          <div><span>02</span><p>Fix the page without shifting its content.</p></div>
+          <div><span>03</span><p>Contain focus, keyboard navigation, and overscroll.</p></div>
+          <div><span>04</span><p>Restore page position and trigger focus on close.</p></div>
+        </div>
+      </div>
+      <footer class="drawer-foot"><button class="button" id="drawerDone" type="button">Restore the page</button></footer>
+    </aside>
+  </div>
+
+  <script>
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+    const body = document.body
+    const pageShell = document.querySelector('#pageShell')
+    const overlay = document.querySelector('#motionOverlay')
+    const drawer = document.querySelector('#motionDrawer')
+    const directionLabel = document.querySelector('#directionLabel')
+    const triggers = [document.querySelector('#drawerTrigger'), document.querySelector('#drawerTriggerSection')]
+    const closeButtons = [document.querySelector('#drawerClose'), document.querySelector('#drawerDone')]
+    let lastScrollY = scrollY
+    let direction = 'down'
+    let scrollFrame = 0
+    let lockedScrollY = 0
+    let activeTrigger = null
+    let closeTimer = 0
+
+    document.documentElement.classList.add('motion-ready')
+
+    const setDirection = () => {
+      const nextY = scrollY
+      if (Math.abs(nextY - lastScrollY) > 3) {
+        direction = nextY > lastScrollY ? 'down' : 'up'
+        body.dataset.scrollDirection = direction
+        directionLabel.textContent = direction === 'down' ? 'Scrolling down' : 'Scrolling up'
+        lastScrollY = nextY
+      }
+      scrollFrame = 0
+    }
+
+    addEventListener('scroll', () => {
+      if (!scrollFrame && !body.classList.contains('is-locked')) scrollFrame = requestAnimationFrame(setDirection)
+    }, { passive: true })
+
+    const reveal = element => {
+      element.classList.add('is-visible')
+      if (reducedMotion.matches) return
+      const offset = direction === 'down' ? 48 : -48
+      const delay = Number(element.dataset.delay || 0)
+      element.getAnimations().forEach(animation => animation.cancel())
+      element.animate([
+        { opacity: 0, transform: `translateY(${offset}px) scale(.98)` },
+        { opacity: 1, transform: 'translateY(0) scale(1)' }
+      ], { duration: 700, delay, easing: 'cubic-bezier(.16, 1, .3, 1)', fill: 'backwards' })
+      element.dataset.revealDirection = direction
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const element = entry.target
+        if (entry.isIntersecting && !element.classList.contains('is-visible')) reveal(element)
+        if (!entry.isIntersecting && element.classList.contains('is-visible')) {
+          const exitedAbove = entry.boundingClientRect.bottom < 0 && direction === 'down'
+          const exitedBelow = entry.boundingClientRect.top > innerHeight && direction === 'up'
+          if (exitedAbove || exitedBelow) element.classList.remove('is-visible')
+        }
+      }
+    }, { threshold: .12, rootMargin: '0px 0px -6% 0px' })
+
+    document.querySelectorAll('.reveal').forEach(element => observer.observe(element))
+
+    const focusable = () => [...drawer.querySelectorAll('button, a[href], input, textarea, select, [tabindex]:not([tabindex="-1"])')].filter(element => !element.disabled && !element.hidden)
+
+    const openDrawer = trigger => {
+      clearTimeout(closeTimer)
+      activeTrigger = trigger
+      lockedScrollY = scrollY
+      const scrollbarWidth = innerWidth - document.documentElement.clientWidth
+      body.style.top = `-${lockedScrollY}px`
+      body.style.paddingRight = `${scrollbarWidth}px`
+      body.dataset.lockedScroll = String(lockedScrollY)
+      body.classList.add('is-locked')
+      pageShell.inert = true
+      overlay.classList.add('is-open')
+      overlay.setAttribute('aria-hidden', 'false')
+      triggers.forEach(button => button.setAttribute('aria-expanded', 'true'))
+      requestAnimationFrame(() => document.querySelector('#drawerClose').focus())
+    }
+
+    const closeDrawer = () => {
+      if (!overlay.classList.contains('is-open')) return
+      overlay.classList.remove('is-open')
+      overlay.setAttribute('aria-hidden', 'true')
+      triggers.forEach(button => button.setAttribute('aria-expanded', 'false'))
+      const returnTarget = activeTrigger
+      const finishClose = () => {
+        pageShell.inert = false
+        body.classList.remove('is-locked')
+        body.style.top = ''
+        body.style.paddingRight = ''
+        scrollTo(0, lockedScrollY)
+        returnTarget?.focus()
+      }
+      closeTimer = setTimeout(finishClose, reducedMotion.matches ? 0 : 520)
+    }
+
+    triggers.forEach(button => button.addEventListener('click', () => openDrawer(button)))
+    closeButtons.forEach(button => button.addEventListener('click', closeDrawer))
+    document.querySelector('#drawerBackdrop').addEventListener('click', closeDrawer)
+
+    addEventListener('keydown', event => {
+      if (!overlay.classList.contains('is-open')) return
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        closeDrawer()
+        return
+      }
+      if (event.key !== 'Tab') return
+      const items = focusable()
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    })
+  </script>
+</body>
+</html>

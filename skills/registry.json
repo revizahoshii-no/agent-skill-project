@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.3.0",
+  "schemaVersion": "1.3.1",
   "loadPolicy": {
     "maxPrimarySkills": 2,
     "maxSupportingSkills": 1,
@@ -80,7 +80,13 @@
         "build UI",
         "frontend implementation",
         "component states",
-        "interaction polish"
+        "interaction polish",
+        "UI transition",
+        "scroll reveal",
+        "drawer",
+        "modal scroll lock",
+        "accidental text selection",
+        "touch callout"
       ],
       "excludes": [
         "backend-only task",
@@ -213,7 +219,10 @@
         "responsive testing",
         "interaction testing",
         "visual acceptance",
-        "cross-viewport check"
+        "cross-viewport check",
+        "scroll lock verification",
+        "reduced motion",
+        "direction-aware reveal"
       ],
       "excludes": [
         "source inspection only"

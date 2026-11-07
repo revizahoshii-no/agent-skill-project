@@ -50,6 +50,8 @@ const jobs = [
   ['/docs/examples/style-atlas.html', 390, 844],
   ['/docs/examples/loading-experience.html', 1365, 900],
   ['/docs/examples/loading-experience.html', 390, 844],
+  ['/docs/examples/interaction-motion.html', 1365, 900],
+  ['/docs/examples/interaction-motion.html', 390, 844],
   ['/docs/examples/workspace.html', 1365, 900],
   ['/docs/examples/workspace.html', 390, 844],
   ['/docs/examples/form.html', 1200, 850],
@@ -93,7 +95,10 @@ for (const [route, width, height] of jobs) {
       min: Number.parseFloat(node.getAttribute('aria-valuemin') || ''),
       max: Number.parseFloat(node.getAttribute('aria-valuemax') || ''),
       now: Number.parseFloat(node.getAttribute('aria-valuenow') || '')
-    }))
+    })),
+    shieldedSelection: document.querySelector('#shieldedCard') ? getComputedStyle(document.querySelector('#shieldedCard')).userSelect : '',
+    copyableSelection: document.querySelector('#copyableCard') ? getComputedStyle(document.querySelector('#copyableCard')).userSelect : '',
+    drawerDialogs: document.querySelectorAll('[role="dialog"][aria-modal="true"]').length
   }))
   if (!response || response.status() !== 200) failures.push(`${route} at ${width}px returned ${response?.status() || 'no response'}`)
   if (result.overflow > 0) failures.push(`${route} at ${width}px overflows by ${result.overflow}px`)
@@ -117,6 +122,12 @@ for (const [route, width, height] of jobs) {
   }
   if (route === '/docs/examples/loading-experience.html' && result.progressBars.some(bar => !Number.isFinite(bar.now) || bar.now < bar.min || bar.now > bar.max)) {
     failures.push(`${route} at ${width}px has an invalid semantic progress value`)
+  }
+  if (route === '/docs/examples/interaction-motion.html' && (result.shieldedSelection !== 'none' || result.copyableSelection !== 'text')) {
+    failures.push(`${route} at ${width}px does not preserve the selective text-selection policy`)
+  }
+  if (route === '/docs/examples/interaction-motion.html' && result.drawerDialogs !== 1) {
+    failures.push(`${route} at ${width}px does not expose one semantic modal drawer`)
   }
   for (const error of runtimeErrors) failures.push(`${route} at ${width}px runtime error: ${error}`)
   await page.close()
@@ -152,6 +163,50 @@ if ((await interaction.locator('#motionToggle').textContent())?.trim() !== 'Resu
 await interaction.getByRole('button', { name: 'Replay' }).click()
 if ((await interaction.locator('#replayProgress').getAttribute('data-replayed')) !== 'true') failures.push('Loading library did not replay determinate progress')
 
+await interaction.goto(base + '/docs/examples/interaction-motion.html', { waitUntil: 'networkidle' })
+await interaction.evaluate(() => scrollTo(0, document.documentElement.scrollHeight))
+await interaction.waitForTimeout(120)
+await interaction.evaluate(() => scrollTo(0, 0))
+await interaction.waitForTimeout(180)
+const upwardReveal = await interaction.locator('.hero-copy').getAttribute('data-reveal-direction')
+if ((await interaction.locator('body').getAttribute('data-scroll-direction')) !== 'up' || upwardReveal !== 'up') failures.push('Interaction field did not reveal from the upward scroll direction')
+await interaction.evaluate(() => {
+  const target = document.querySelector('#drawer-title')
+  scrollTo(0, scrollY + target.getBoundingClientRect().top)
+})
+await interaction.waitForTimeout(180)
+if ((await interaction.locator('body').getAttribute('data-scroll-direction')) !== 'down') failures.push('Interaction field did not record downward scrolling')
+const selectionPolicy = await interaction.evaluate(() => ({
+  shielded: getComputedStyle(document.querySelector('#shieldedCard')).userSelect,
+  copyable: getComputedStyle(document.querySelector('#copyableCard')).userSelect
+}))
+if (selectionPolicy.shielded !== 'none' || selectionPolicy.copyable !== 'text') failures.push('Interaction field did not preserve selective accidental-selection shielding')
+await interaction.getByRole('button', { name: 'Test scroll lock' }).click()
+await interaction.waitForTimeout(60)
+const lockedState = await interaction.evaluate(() => ({
+  locked: document.body.classList.contains('is-locked'),
+  stored: Number(document.body.dataset.lockedScroll || '-1'),
+  inert: document.querySelector('#pageShell').inert,
+  expanded: document.querySelector('#drawerTriggerSection').getAttribute('aria-expanded'),
+  active: document.activeElement?.id || ''
+}))
+if (!lockedState.locked || lockedState.stored <= 0 || !lockedState.inert || lockedState.expanded !== 'true' || lockedState.active !== 'drawerClose') failures.push('Interaction drawer did not establish scroll lock, inert background, and initial focus')
+await interaction.keyboard.press('Shift+Tab')
+if ((await interaction.evaluate(() => document.activeElement?.id)) !== 'drawerDone') failures.push('Interaction drawer did not wrap backward focus')
+await interaction.keyboard.press('Tab')
+if ((await interaction.evaluate(() => document.activeElement?.id)) !== 'drawerClose') failures.push('Interaction drawer did not wrap forward focus')
+await interaction.keyboard.press('Escape')
+await interaction.waitForTimeout(580)
+const restoredState = await interaction.evaluate(() => ({
+  scroll: scrollY,
+  locked: document.body.classList.contains('is-locked'),
+  inert: document.querySelector('#pageShell').inert,
+  top: document.body.style.top,
+  expanded: document.querySelector('#drawerTriggerSection').getAttribute('aria-expanded'),
+  active: document.activeElement?.id || ''
+}))
+if (Math.abs(restoredState.scroll - lockedState.stored) > 1 || restoredState.locked || restoredState.inert || restoredState.top || restoredState.expanded !== 'false' || restoredState.active !== 'drawerTriggerSection') failures.push('Interaction drawer did not restore scroll, background behavior, and trigger focus')
+
 await interaction.close()
 
 const reducedContext = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' })
@@ -166,6 +221,16 @@ const reducedResult = await reducedPage.evaluate(() => ({
 if (!reducedResult.preference) failures.push('Loading library did not receive the reduced-motion preference')
 if (reducedResult.longAnimations) failures.push(`Loading library kept ${reducedResult.longAnimations} long animations under reduced motion`)
 if (!reducedResult.status || reducedResult.progress !== '72') failures.push('Loading library lost progress meaning under reduced motion')
+await reducedPage.goto(base + '/docs/examples/interaction-motion.html', { waitUntil: 'networkidle' })
+const reducedMotionResult = await reducedPage.evaluate(() => ({
+  preference: matchMedia('(prefers-reduced-motion: reduce)').matches,
+  longAnimations: document.getAnimations().filter(animation => Number(animation.effect?.getTiming().duration || 0) > 1).length,
+  hiddenReveals: [...document.querySelectorAll('.reveal')].filter(element => getComputedStyle(element).opacity === '0').length,
+  shielded: getComputedStyle(document.querySelector('#shieldedCard')).userSelect,
+  copyable: getComputedStyle(document.querySelector('#copyableCard')).userSelect
+}))
+if (!reducedMotionResult.preference || reducedMotionResult.longAnimations || reducedMotionResult.hiddenReveals) failures.push('Interaction field did not preserve complete content under reduced motion')
+if (reducedMotionResult.shielded !== 'none' || reducedMotionResult.copyable !== 'text') failures.push('Interaction field lost its selection policy under reduced motion')
 await reducedContext.close()
 
 await browser.close()
@@ -177,4 +242,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`Browser acceptance passed for ${jobs.length} viewport scenarios, 5 interaction paths, and 1 reduced-motion path`)
+console.log(`Browser acceptance passed for ${jobs.length} viewport scenarios, 6 interaction paths, and 2 reduced-motion pages`)
